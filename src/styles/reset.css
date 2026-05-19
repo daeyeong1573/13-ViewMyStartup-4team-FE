@@ -132,3 +132,10 @@ table {
 *::after {
   box-sizing: border-box;
 }
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-pretendard);
+}
