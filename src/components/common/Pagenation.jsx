@@ -20,7 +20,7 @@ const PageNation = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className={styles.pagination}>
+    <div className={styles.pagenation}>
       <button
         className={styles.pageBtn}
         onClick={handlePrevPage}
