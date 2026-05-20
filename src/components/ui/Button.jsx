@@ -10,7 +10,7 @@ function Button({ children, onClick, variant = "solid", status = "active" }) {
     <button
       type="button"
       className={buttonClass}
-      onClick={status !== "inactive" ? onClick : undefined}
+      onClick={onClick}
       disabled={status === "inactive"}
     >
       {variant === "reset" && (
