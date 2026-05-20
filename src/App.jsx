@@ -7,7 +7,7 @@ import Layout from "./layouts/Layout";
 import MyStartupComparePage from "./pages/MyStartupComparePage";
 import InvestmentStatusPage from "./pages/InvestmentStatusPage";
 import CompareStatusPage from "./pages/CompareStatusPage";
-import PageNation from "./components/common/PagiNation";
+import PageNation from "./components/common/PageNation";
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1);

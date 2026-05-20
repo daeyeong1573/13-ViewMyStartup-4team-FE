@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import style from "../layouts/GNB.module.css";
+import styles from "../layouts/GNB.module.css";
 import GNBlogo from "../assets/images/img_gnb_logo.png";
 
 const NAV_MENU = [
@@ -10,24 +10,24 @@ const NAV_MENU = [
 
 function GNB() {
   return (
-    <nav className={style.container}>
-      <div className={style.gnbBox}>
-        <div className={style.logoWrapper}>
+    <nav className={styles.container}>
+      <div className={styles.gnbBox}>
+        <div className={styles.logoWrapper}>
           <Link to="/">
             <img src={GNBlogo} alt="뷰 마이 스타트업 홈" />
           </Link>
         </div>
 
-        <div className={style.navMenu}>
+        <div className={styles.navMenu}>
           {NAV_MENU.map((menu) => (
             <NavLink
               key={menu.id}
               to={menu.path}
               className={({ isActive }) =>
-                `${style.navLink} ${isActive ? style.active : ""}`
+                `${styles.navLink} ${isActive ? styles.active : ""}`
               }
             >
-              <span className={style.nameTag}>{menu.label}</span>
+              <span className={styles.nameTag}>{menu.label}</span>
             </NavLink>
           ))}
         </div>
