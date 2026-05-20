@@ -1,4 +1,4 @@
-import "..common/pagination.module.css";
+import "..common/PagiNation.module.css";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevPage = () => {
