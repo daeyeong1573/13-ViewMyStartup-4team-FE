@@ -31,7 +31,7 @@ function Dropdown({ options = [], onSelect = () => {} }) {
   return (
     <div className={styles.container} ref={dropdownRef}>
       <button className={styles.button} onClick={handleToggle} type="button">
-        <span>{selected?.label}</span>
+        <span>{selected?.label ?? "선택해주세요"}</span>
         <img
           src={ToggleIcon}
           alt="토글 아이콘"
