@@ -1,4 +1,4 @@
-import style from "./CompanyCard.module.css";
+import styles from "./CompanyCard.module.css";
 import defaultLogo from "../../assets/images/default_image.png";
 import MinusIcon from "./MinusIcon";
 
@@ -9,30 +9,30 @@ function CompanyCard({ image, name, category, onRemove }) {
   };
 
   return (
-    <div className={style.container}>
+    <div className={styles.container}>
       <button
-        className={style.removeButton}
+        className={styles.removeButton}
         onClick={handleRemove}
         aria-label="기업 제거"
       >
-        <MinusIcon className={style.minusIcon} />
+        <MinusIcon className={styles.minusIcon} />
       </button>
 
-      <div className={style.contentBox}>
-        <div className={style.imageWrapper}>
+      <div className={styles.contentBox}>
+        <div className={styles.imageWrapper}>
           <img
             src={image || defaultLogo}
             alt={`기업 ${name} 로고`}
-            className={style.logoImage}
+            className={styles.logoImage}
             onError={(e) => {
               e.target.src = defaultLogo;
             }}
           />
         </div>
 
-        <div className={style.infoBox}>
-          <span className={style.companyName}>{name}</span>
-          <span className={style.categoryText}>{category}</span>
+        <div className={styles.infoBox}>
+          <span className={styles.companyName}>{name}</span>
+          <span className={styles.categoryText}>{category}</span>
         </div>
       </div>
     </div>

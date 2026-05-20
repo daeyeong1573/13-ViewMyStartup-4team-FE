@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "./SearchBar.module.css";
+import styles from "./SearchBar.module.css";
 import CloseIcon from "./CloseIcon";
 import SearchIcon from "./SearchIcon";
 
@@ -11,24 +11,24 @@ function SearchBar() {
 
   return (
     <div
-      className={`${style.container} ${isTyping ? style.typing : style.default}`}
+      className={`${styles.container} ${isTyping ? styles.typing : styles.default}`}
     >
-      <div className={style.innerBox}>
-        {!isTyping && <SearchIcon className={style.icon} />}
+      <div className={styles.innerBox}>
+        {!isTyping && <SearchIcon className={styles.icon} />}
 
         <input
           type="text"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           placeholder={!isTyping ? "검색어를 입력해주세요" : ""}
-          className={style.input}
+          className={styles.input}
         />
 
-        <div className={style.rightIconWrapper}>
+        <div className={styles.rightIconWrapper}>
           {isTyping && (
             <>
               <CloseIcon onClick={handleClear} />
-              <SearchIcon className={style.icon} />
+              <SearchIcon className={styles.icon} />
             </>
           )}
         </div>
