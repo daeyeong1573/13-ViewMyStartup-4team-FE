@@ -10,7 +10,11 @@ function CompanyCard({ image, name, category, onRemove }) {
 
   return (
     <div className={style.container}>
-      <button className={style.removeButton} onClick={handleRemove}>
+      <button
+        className={style.removeButton}
+        onClick={handleRemove}
+        aria-label="기업 제거"
+      >
         <MinusIcon className={style.minusIcon} />
       </button>
 
