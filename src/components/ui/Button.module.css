@@ -1,0 +1,79 @@
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+}
+
+.solid {
+  width: 11.4375rem;
+  height: 3rem;
+  padding: 0.8125rem 3rem;
+  border-radius: 3.125rem;
+  background: var(--brand-brand_orange);
+  color: var(--white-white);
+}
+
+.reset {
+  width: 11.4375rem;
+  height: 2.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 3.125rem;
+  background: var(--brand-brand_orange);
+  color: var(--white-white);
+}
+
+.outline,
+.selected {
+  width: 6.9375rem;
+  height: 3rem;
+  padding: 0.8125rem 1.5rem;
+  gap: 0.625rem;
+  border-radius: 0.625rem;
+  background: transparent;
+}
+
+.outline.active {
+  border: 1px solid var(--brand-brand_orange);
+  color: var(--brand-brand_orange);
+}
+
+.outline.inactive {
+  border: 1px solid var(--gray-gray_200);
+  color: var(--gray-gray_200);
+  background: transparent;
+}
+
+.outline.done {
+  border: 1px solid var(--gray-gray_100);
+  color: var(--gray-gray_100);
+  background: transparent;
+}
+
+.solid.inactive,
+.reset.inactive {
+  background: var(--black-black_100);
+  color: var(--gray-gray_200);
+  border: none;
+}
+
+.prefixIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+}
+
+/*undefined에 대비하여 독립 상태 클래스 생성*/
+.active {
+}
+
+.inactive {
+}
+
+.done {
+}
