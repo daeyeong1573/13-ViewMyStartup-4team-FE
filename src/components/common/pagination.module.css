@@ -1,0 +1,63 @@
+/* pagination.module.css */
+
+:root {
+  /* colors */
+  --black-black_100: #2e2e2e;
+  --black-black_200: #282828;
+  --black-black_300: #212121;
+  --black-black_400: #131313;
+  --gray-gray_100: #d8d8d8;
+  --gray-gray_200: #747474;
+  --gray-gray_300: #4b4b4b;
+  --gray-gray_400: #333333;
+
+  --white-white: #ffffff;
+  --brand-brand_orange: #eb5230;
+  --blue-blue: #558fff;
+  --red-red_error: #c41013;
+
+  /* font */
+  --font-pretendard: "Pretendard Variable", sans-serif;
+}
+
+.pagination {
+  width: 62.5rem;
+  height: 6.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+}
+
+.pageBtn {
+  font-family: var(--font-pretendard);
+  background-color: var(--black-black_300);
+  color: var(--gray-gray_200);
+  border: none;
+  border-radius: 0.25rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: var(--black-black_100);
+  color: var(--white-white);
+}
+
+.pageBtn.active {
+  background-color: var(--brand-brand_orange);
+  color: var(--white-white);
+  font-weight: bold;
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
