@@ -1,0 +1,56 @@
+.container {
+  height: 3.75rem;
+  border-bottom: 1px solid var(--black-black_100);
+  background: var(--black-black_400);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gnbBox {
+  display: flex;
+  align-items: center;
+  max-width: 120rem;
+  width: 100%;
+  height: 100%;
+  gap: 2.5rem;
+  padding-left: 22.5rem;
+}
+
+.logoWrapper {
+  width: 6.9105rem;
+  height: 2.43481rem;
+  flex-shrink: 0;
+}
+
+.logoWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  padding: 1.3125rem 1.0625rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  text-decoration: none;
+}
+
+.active .nameTag {
+  color: #fff;
+  font-weight: 700;
+}
+
+.nameTag {
+  color: var(--gray-gray_200);
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: normal;
+}
