@@ -1,4 +1,4 @@
-import "..common/PagiNation.module.css";
+import styles from "./PageNation.module.css";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevPage = () => {
@@ -20,9 +20,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="pagination">
+    <div className="styles.pagination">
       <button
-        className="page-btn"
+        className="styles.page-btn"
         onClick={handlePrevPage}
         disabled={currentPage === 1}
       >
@@ -31,14 +31,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       {pageNumbers.map((pageNum) => (
         <button
           key={pageNum}
-          className={`page-btn ${currentPage === pageNum ? "active" : ""}`}
+          className={`styles.page-btn ${currentPage === pageNum ? "active" : ""}`}
           onClick={() => onPageChange(pageNum)}
         >
           {pageNum}
         </button>
       ))}
       <button
-        className="page-btn"
+        className="styles.page-btn"
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
       >
