@@ -1,6 +1,6 @@
 import styles from "./PageNation.module.css";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const PageNation = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevPage = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
@@ -20,25 +20,28 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="styles.pagination">
+    <div className={styles.pagination}>
       <button
-        className="styles.page-btn"
+        className={styles.pageBtn}
         onClick={handlePrevPage}
         disabled={currentPage === 1}
       >
         &lt;
       </button>
+
       {pageNumbers.map((pageNum) => (
         <button
           key={pageNum}
-          className={`styles.page-btn ${currentPage === pageNum ? "active" : ""}`}
+          // 현재 페이지면 styles.active를 추가하여 주황색으로 활성화
+          className={`${styles.pageBtn} ${currentPage === pageNum ? styles.active : ""}`}
           onClick={() => onPageChange(pageNum)}
         >
           {pageNum}
         </button>
       ))}
+
       <button
-        className="styles.page-btn"
+        className={styles.pageBtn}
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
       >
@@ -47,4 +50,5 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     </div>
   );
 };
-export default Pagination;
+
+export default PageNation;
