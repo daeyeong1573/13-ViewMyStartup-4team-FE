@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import CompanyListPage from "./pages/CompanyListPage";
 import UiDesignTestPage from "./pages/UiDesignTestPage";
 import NotFoundPage from "./pages/NotFoundPage";
