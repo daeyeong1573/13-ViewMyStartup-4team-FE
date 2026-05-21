@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageNation from "./PageNation";
+import PageNation from "../components/common/PageNation";
 import styles from "./PageNationTestPage.module.css";
 
 const PageNationTestPage = () => {
