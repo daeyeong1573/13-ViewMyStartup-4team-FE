@@ -1,9 +1,17 @@
-.container {
+.compareCompanycontainer {
   position: relative;
   width: 7.875rem;
   height: 11.6875rem;
   border-radius: 0.5rem;
   background: var(--gray-gray_400);
+  display: flex;
+  flex-direction: column;
+}
+
+.myCompanyContainer {
+  position: relative;
+  width: 7.875rem;
+  height: 11.6875rem;
   display: flex;
   flex-direction: column;
 }

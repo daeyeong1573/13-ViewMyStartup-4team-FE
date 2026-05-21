@@ -1,0 +1,24 @@
+.cardArea {
+  position: relative;
+  background-color: var(--black-black_300);
+  border-radius: 0.25rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.headerText {
+  color: var(--white-white);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+}
