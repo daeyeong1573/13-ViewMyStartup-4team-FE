@@ -2,7 +2,7 @@ import styles from "./CompanyListItem.module.css";
 import Button from "./Button.jsx";
 import defaultLogo from "../../assets/images/default_image.png";
 
-function CompanyList({
+function CompanyListItem({
   image,
   name,
   category,
@@ -36,4 +36,4 @@ function CompanyList({
   );
 }
 
-export default CompanyList;
+export default CompanyListItem;
