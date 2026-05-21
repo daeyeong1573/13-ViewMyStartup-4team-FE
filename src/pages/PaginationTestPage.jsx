@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PageNation from "../components/common/PageNation";
-import styles from "./PageNationTestPage.module.css";
+import Pagination from "../components/common/Pagination";
+import styles from "./PaginationTestPage.module.css";
 
-const PageNationTestPage = () => {
+const PaginationTestPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = 12;
@@ -20,7 +20,7 @@ const PageNationTestPage = () => {
         <p>이곳에 팀원들이 각자의 리스트 컴포넌트 등을 배치하면 됩니다.</p>
       </div>
 
-      <PageNation
+      <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
@@ -29,4 +29,4 @@ const PageNationTestPage = () => {
   );
 };
 
-export default PageNationTestPage;
+export default PaginationTestPage;

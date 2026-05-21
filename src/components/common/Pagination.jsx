@@ -1,6 +1,6 @@
-import styles from "./PageNation.module.css";
+import styles from "./Pagination.module.css";
 
-const PageNation = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevPage = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
@@ -20,7 +20,7 @@ const PageNation = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className={styles.pagenation}>
+    <div className={styles.Pagination}>
       <button
         className={styles.pageBtn}
         onClick={handlePrevPage}
@@ -51,4 +51,4 @@ const PageNation = ({ currentPage, totalPages, onPageChange }) => {
   );
 };
 
-export default PageNation;
+export default Pagination;
