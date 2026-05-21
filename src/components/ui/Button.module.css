@@ -77,3 +77,20 @@
 
 .done {
 }
+
+.solidOutline {
+  width: 11.4375rem;
+  height: 3rem;
+  padding: 0.8125rem 3rem;
+  border-radius: 3.125rem;
+  background: transparent;
+  border: 1px solid var(--brand-brand_orange);
+  color: var(--brand-brand_orange);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
