@@ -1,0 +1,32 @@
+.cancelBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-gray_100);
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.addSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.addIcon {
+  width: 100%;
+  height: auto;
+  max-width: 48px;
+}
+
+.addLabel {
+  color: var(--white-white);
+  font-size: 0.875rem;
+}
