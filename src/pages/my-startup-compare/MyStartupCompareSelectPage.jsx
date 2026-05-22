@@ -22,6 +22,8 @@ export default function MyStartupCompareSelectPage() {
   const { myCompany, selectCompany, cancelCompany } = useMyCompany();
   const [compareCompanies, setCompareCompanies] = useState([]);
   const [modalOpen, setModalOpen] = useState({ my: false, compare: false });
+  const [isSearch, setIsSearch] = useState(false);
+
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const [inputValue, setInputValue] = useState("");
 
@@ -38,6 +40,7 @@ export default function MyStartupCompareSelectPage() {
   const isCompareActive = myCompany && compareCompanies.length >= 1;
 
   const handleSearch = () => {
+    setIsSearch(true);
     setFilter((prev) => ({ ...prev, search: inputValue, currentPage: 1 }));
   };
 
@@ -51,6 +54,8 @@ export default function MyStartupCompareSelectPage() {
   };
 
   const handleModalClose = (type) => {
+    setIsSearch(false);
+    setInputValue("");
     setModalOpen((prev) => ({ ...prev, [type]: false }));
     setFilter(INITIAL_FILTER);
   };
@@ -140,7 +145,7 @@ export default function MyStartupCompareSelectPage() {
             </>
           )}
 
-          {companyList.length > 0 && (
+          {isSearch && (
             <>
               <h3 className={styles.modalHeader}>
                 검색 결과 ({pagination.total})
