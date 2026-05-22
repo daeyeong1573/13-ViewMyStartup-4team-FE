@@ -1,4 +1,4 @@
-import { KEYS, MAX_SIZE } from "@/constants/companyConstants";
+import { KEYS, MAX_SIZE } from "@/constants/company";
 import { getStorage, setStorage } from "@/utils/storage";
 import { useState, useMemo } from "react";
 
