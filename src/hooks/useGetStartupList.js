@@ -8,6 +8,12 @@ export function useGetStartupList(options = {}) {
   const [pagination, setPagination] = useState({});
 
   useEffect(() => {
+    if (!options.search) {
+      setCompanyList([]);
+      setPagination({});
+      return;
+    }
+
     const params = new URLSearchParams({
       page: 1,
       limit: 10,
