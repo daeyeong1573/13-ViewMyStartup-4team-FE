@@ -1,4 +1,6 @@
 import styles from "./Pagination.module.css";
+import leftImg from "@/assets/icons/ic_arrow_left.png";
+import rightImg from "@/assets/icons/ic_arrow_right.png";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevPage = () => {
@@ -24,9 +26,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         className={styles.pageBtn}
         onClick={handlePrevPage}
+        aria-label="이전 페이지 버튼"
         disabled={currentPage === 1}
       >
-        &lt;
+        <img src={leftImg} />
       </button>
 
       {pageNumbers.map((pageNum) => (
@@ -43,9 +46,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         className={styles.pageBtn}
         onClick={handleNextPage}
+        aria-label="다음 페이지 버튼"
         disabled={currentPage === totalPages}
       >
-        &gt;
+        <img src={rightImg} />
       </button>
     </div>
   );
