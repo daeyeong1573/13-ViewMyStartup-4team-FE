@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import styles from "./Modal.module.css";
 import CloseIcon from "@/assets/icons/ic_delete.png";
 import { useKeyEscClose } from "@/hooks/useKeyEscClose";
