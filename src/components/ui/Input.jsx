@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Input.module.css";
-import EyeOn from "../../assets/icons/btn_visibility.png";
-import EyeOff from "../../assets/icons/btn_invisibility.png";
+import EyeOn from "@/assets/icons/btn_visibility.png";
+import EyeOff from "@/assets/icons/btn_invisibility.png";
 
 function Input({
   placeholder,

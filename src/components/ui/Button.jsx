@@ -1,7 +1,7 @@
 import styles from "./Button.module.css";
-import RestartIcon from "../../assets/icons/ic_restart.png";
-import WhiteRestartIcon from "../../assets/icons/ic_restart_white.svg";
-import CheckIcon from "../../assets/icons/ic_check.png";
+import RestartIcon from "@assets/icons/ic_restart.png";
+import WhiteRestartIcon from "@assets/icons/ic_restart_white.svg";
+import CheckIcon from "@assets/icons/ic_check.png";
 
 function Button({ children, onClick, variant = "solid", status = "active" }) {
   const buttonClass = [styles.base, styles[variant], styles[status]].join(" ");

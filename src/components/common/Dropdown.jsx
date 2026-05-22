@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Dropdown.module.css";
-import ToggleIcon from "../../assets/icons/ic_toggle.png";
+import ToggleIcon from "@/assets/icons/ic_toggle.png";
 
 function Dropdown({ options = [], onSelect = () => {} }) {
   const [isOpen, setIsOpen] = useState(false);

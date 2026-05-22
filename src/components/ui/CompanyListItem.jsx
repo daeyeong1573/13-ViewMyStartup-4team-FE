@@ -1,6 +1,6 @@
 import styles from "./CompanyListItem.module.css";
 import Button from "./Button.jsx";
-import defaultLogo from "../../assets/images/default_image.png";
+import defaultLogo from "@/assets/images/default_image.png";
 
 function CompanyListItem({
   image,
