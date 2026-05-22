@@ -16,6 +16,13 @@
   gap: 0.5rem;
 }
 
+.searchBtn {
+  display: flex;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
 .icon {
   width: 1.5rem;
   height: 1.5rem;
