@@ -4,10 +4,17 @@ import { useMyCompany } from "@/hooks/useMyCompany";
 import CardArea from "@/components/common/startup-compare/CardArea";
 import CompareCardContent from "@/components/common/startup-compare/CompareCardContent";
 import MyCompanyCardContent from "@/components/common/startup-compare/MyCompanyCardContent";
+import Modal from "@/components/common/Modal";
+import SearchBar from "@/components/ui/SearchBar";
+import CompanyListItem from "@/components/ui/CompanyListItem";
 
 export default function MyStartupCompareSelectPage() {
   const { myCompany, selectCompany, cancelCompany } = useMyCompany();
   const [compareCompanies, setCompareCompanies] = useState([]);
+  const [modalOpen, setModalOpen] = useState({
+    my: false,
+    compare: false,
+  });
 
   const isCompareActive = myCompany && compareCompanies.length >= 1;
 
@@ -29,7 +36,7 @@ export default function MyStartupCompareSelectPage() {
         <CardArea header="나의 기업을 선택해 주세요!" label="나의 기업 선택">
           <MyCompanyCardContent
             myCompany={myCompany}
-            onAdd={() => selectCompany(dummyCompany)} // 여기에 모달 버튼
+            onAdd={() => setModalOpen((prev) => ({ ...prev, my: true }))} // 여기에 모달 버튼
             onCancel={cancelCompany}
           />
         </CardArea>
@@ -63,6 +70,24 @@ export default function MyStartupCompareSelectPage() {
           </button>
         </div>
       </div>
+
+      {modalOpen.my && (
+        <Modal
+          title="나의 기업 선택하기"
+          onClose={() => setModalOpen({ my: false })}
+        >
+          <SearchBar />
+          <h2 className={styles.modalHeader}>최근에 선택된 기업 ()</h2>
+          <CompanyListItem
+            logo={dummyCompany.imgUrl}
+            name="코드잇"
+            category="에듀 테크"
+            variant="outline"
+            status="active"
+            buttonText="선택하기"
+          />
+        </Modal>
+      )}
     </main>
   );
 }
