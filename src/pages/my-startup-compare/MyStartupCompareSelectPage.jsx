@@ -1,6 +1,6 @@
 import styles from "./MyStartupCompareSelectPage.module.css";
 import { useState } from "react";
-import { useMyCompany } from "../../hooks/useMyCompany";
+import { useMyCompany } from "@/hooks/useMyCompany";
 import CardArea from "@/components/common/startup-compare/CardArea";
 import CompareCardContent from "@/components/common/startup-compare/CompareCardContent";
 import MyCompanyCardContent from "@/components/common/startup-compare/MyCompanyCardContent";

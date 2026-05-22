@@ -15,7 +15,6 @@ function App() {
           <Route path="mycompare" element={<MyStartupCompareSelectPage />} />
           <Route path="comparestat" element={<CompareStatusPage />} />
           <Route path="investstat" element={<InvestmentStatusPage />} />
-          <Route path="test" element={<UiDesignTestPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

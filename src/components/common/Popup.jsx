@@ -1,5 +1,5 @@
 import styles from "./Popup.module.css";
-import CloseIcon from "../../assets/icons/ic_delete.png";
+import CloseIcon from "@/assets/icons/ic_delete.png";
 import Button from "../ui/Button";
 
 function Popup({
