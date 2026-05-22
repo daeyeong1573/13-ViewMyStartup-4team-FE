@@ -21,7 +21,7 @@ const INITIAL_FILTER = {
 export default function MyStartupCompareSelectPage() {
   const { myCompany, selectCompany, cancelCompany } = useMyCompany();
   const [compareCompanies, setCompareCompanies] = useState([]);
-  const [modalOpen, setModalOpen] = useState({ my: false, compare: false });
+  const [isModalOpen, setIsModalOpen] = useState({ my: false, compare: false });
   const [isSearch, setIsSearch] = useState(false);
 
   const [filter, setFilter] = useState(INITIAL_FILTER);
@@ -56,7 +56,7 @@ export default function MyStartupCompareSelectPage() {
   const handleModalClose = (type) => {
     setIsSearch(false);
     setInputValue("");
-    setModalOpen((prev) => ({ ...prev, [type]: false }));
+    setIsModalOpen((prev) => ({ ...prev, [type]: false }));
     setFilter(INITIAL_FILTER);
   };
 
@@ -72,7 +72,7 @@ export default function MyStartupCompareSelectPage() {
         <CardArea header="나의 기업을 선택해 주세요!" label="나의 기업 선택">
           <MyCompanyCardContent
             myCompany={myCompany}
-            onAdd={() => setModalOpen((prev) => ({ ...prev, my: true }))}
+            onAdd={() => setIsModalOpen((prev) => ({ ...prev, my: true }))}
             onCancel={cancelCompany}
           />
         </CardArea>
@@ -86,7 +86,7 @@ export default function MyStartupCompareSelectPage() {
                 className={styles.addCompareBtn}
                 type="button"
                 onClick={() =>
-                  setModalOpen((prev) => ({ ...prev, compare: true }))
+                  setIsModalOpen((prev) => ({ ...prev, compare: true }))
                 }
               >
                 기업 추가하기
@@ -112,7 +112,7 @@ export default function MyStartupCompareSelectPage() {
         </div>
       </div>
 
-      {modalOpen.my && (
+      {isModalOpen.my && (
         <Modal
           title="나의 기업 선택하기"
           onClose={() => handleModalClose("my")}
