@@ -40,12 +40,14 @@ export default function MyStartupCompareSelectPage() {
   const isCompareActive = myCompany && compareCompanies.length >= 1;
 
   const handleSearch = () => {
+    if (inputValue.trim() === "") return;
     setIsSearch(true);
     setFilter((prev) => ({ ...prev, search: inputValue, currentPage: 1 }));
   };
 
   const handleClear = () => {
     setInputValue("");
+    setIsSearch(false);
     setFilter((prev) => ({ ...prev, search: "", currentPage: 1 }));
   };
 

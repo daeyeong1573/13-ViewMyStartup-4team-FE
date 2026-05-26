@@ -1,4 +1,4 @@
-import { API } from "@/constants/api";
+import { API } from "./apiService";
 
 export default class MyCompanyApi {
   async getCompanyList(params) {
