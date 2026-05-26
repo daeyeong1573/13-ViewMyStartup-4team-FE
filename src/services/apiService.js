@@ -1,3 +1,5 @@
+import { BASE_URL } from "@/constants/api";
+
 async function request(endpoint, options = {}) {
   const config = {
     ...options,
