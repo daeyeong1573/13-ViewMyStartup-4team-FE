@@ -10,6 +10,7 @@ import CompanyListItem from "@/components/ui/CompanyListItem";
 import { useMyCompanyStorage } from "@/hooks/useMyCompanyStorage";
 import { useGetStartupList } from "@/hooks/useGetStartupList";
 import Pagination from "@/components/common/Pagination";
+import MyCompanyModalItem from "./MyCompanyModalItem";
 
 const INITIAL_FILTER = {
   search: "",
@@ -40,7 +41,6 @@ export default function MyStartupCompareSelectPage() {
   const isCompareActive = myCompany && compareCompanies.length >= 1;
 
   const handleSearch = () => {
-    if (inputValue.trim() === "") return;
     setIsSearch(true);
     setFilter((prev) => ({ ...prev, search: inputValue, currentPage: 1 }));
   };
@@ -128,42 +128,23 @@ export default function MyStartupCompareSelectPage() {
 
           {/*  최근 선택된 기업 */}
           {myCompanyList.length > 0 && (
-            <>
-              <h3 className={styles.modalHeader}>
-                최근 선택된 기업 ({myCompanyList.length})
-              </h3>
-              {myCompanyList.map((company) => (
-                <CompanyListItem
-                  key={company.id}
-                  image={company.imgUrl}
-                  name={company.name}
-                  category={company.category}
-                  variant="outline"
-                  status="active"
-                  buttonText="선택하기"
-                  onButtonClick={() => handleMyCompanySelect(company)}
-                />
-              ))}
-            </>
+            <MyCompanyModalItem
+              title="최근 선택된 기업"
+              total={myCompanyList.length}
+              list={myCompanyList}
+              handleClick={handleMyCompanySelect}
+            />
           )}
 
           {isSearch && (
             <>
-              <h3 className={styles.modalHeader}>
-                검색 결과 ({pagination.total})
-              </h3>
-              {companyList.map((company) => (
-                <CompanyListItem
-                  key={company.id}
-                  image={company.imgUrl}
-                  name={company.name}
-                  category={company.category}
-                  variant="outline"
-                  status="active"
-                  buttonText="선택하기"
-                  onButtonClick={() => handleMyCompanySelect(company)}
-                />
-              ))}
+              <MyCompanyModalItem
+                title="검색 결과"
+                total={pagination.total}
+                list={companyList}
+                handleClick={handleMyCompanySelect}
+              />
+
               <Pagination
                 currentPage={currentPage}
                 totalPages={pagination.totalPages}
