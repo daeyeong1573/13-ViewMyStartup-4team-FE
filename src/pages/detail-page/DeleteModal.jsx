@@ -7,9 +7,8 @@ function DeleteModal({
   isOpen,
   onClose,
   password,
-  onPassWordChange,
+  onPasswordChange,
   onConfirm,
-  error,
 }) {
   if (!isOpen) return null;
 
@@ -21,10 +20,9 @@ function DeleteModal({
           type="password"
           placeholder="패스워드를 입력해주세요"
           value={password}
-          onChange={(e) => onPassWordChange(e.target.value)}
-          {...(error && { errorMessage: error })}
+          onChange={(e) => onPasswordChange(e.target.value)}
         />
-        <div className={styles.BtnWrapper}>
+        <div className={styles.btnWrapper}>
           <Button variant="solid" status="active" onClick={onConfirm}>
             삭제하기
           </Button>
