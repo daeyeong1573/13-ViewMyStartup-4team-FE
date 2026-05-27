@@ -12,9 +12,14 @@ function DeleteModal({
 }) {
   if (!isOpen) return null;
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onConfirm();
+  };
+
   return (
     <Modal title="삭제 권한 인증" onClose={onClose}>
-      <div className={styles.innerBox}>
+      <form className={styles.innerBox} onSubmit={handleSubmit}>
         <h2 className={styles.title}>비밀번호</h2>
         <Input
           type="password"
@@ -23,11 +28,11 @@ function DeleteModal({
           onChange={(e) => onPasswordChange(e.target.value)}
         />
         <div className={styles.btnWrapper}>
-          <Button variant="solid" status="active" onClick={onConfirm}>
+          <Button type="submit" variant="solid" status="active">
             삭제하기
           </Button>
         </div>
-      </div>
+      </form>
     </Modal>
   );
 }
