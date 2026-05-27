@@ -22,6 +22,12 @@
   cursor: pointer;
 }
 
+.addCompareBtn:disabled {
+  color: var(--gray-gray_200);
+  background-color: var(--black-black_100);
+  cursor: auto;
+}
+
 .addCompareBtn:hover {
   opacity: 0.9;
 }
@@ -51,4 +57,10 @@
 
 .compareBtnActive:hover {
   opacity: 0.9;
+}
+
+.maxTxt {
+  color: var(--red-red_error);
+  margin-top: 1rem;
+  margin-left: 0.5rem;
 }
