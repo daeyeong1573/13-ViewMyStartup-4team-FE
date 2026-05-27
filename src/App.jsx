@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import CompanyListPage from "./pages/CompanyListPage";
+import CompanyListPage from "./pages/my-startup-companylistpage/MyStartupCompanyListPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./layouts/Layout";
 import InvestmentStatusPage from "./pages/InvestmentStatusPage";

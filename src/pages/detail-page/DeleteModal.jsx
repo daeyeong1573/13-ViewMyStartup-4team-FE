@@ -1,0 +1,40 @@
+import Modal from "@/components/common/Modal";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import styles from "./DeleteModal.module.css";
+
+function DeleteModal({
+  isOpen,
+  onClose,
+  password,
+  onPasswordChange,
+  onConfirm,
+}) {
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onConfirm();
+  };
+
+  return (
+    <Modal title="삭제 권한 인증" onClose={onClose}>
+      <form className={styles.innerBox} onSubmit={handleSubmit}>
+        <h2 className={styles.title}>비밀번호</h2>
+        <Input
+          type="password"
+          placeholder="패스워드를 입력해주세요"
+          value={password}
+          onChange={(e) => onPasswordChange(e.target.value)}
+        />
+        <div className={styles.btnWrapper}>
+          <Button type="submit" variant="solid" status="active">
+            삭제하기
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+export default DeleteModal;
