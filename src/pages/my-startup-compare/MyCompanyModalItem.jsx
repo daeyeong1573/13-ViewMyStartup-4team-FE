@@ -27,8 +27,8 @@ export default function MyCompanyModalItem({
             name={company.name}
             category={company.category}
             variant={variant}
-            status={isSelected ? "done" : status} // ← 분기
-            buttonText={isSelected ? "선택완료" : buttonText} // ← 분기
+            status={isSelected ? "done" : status}
+            buttonText={isSelected ? "선택완료" : buttonText}
             onButtonClick={() => handleClick(company)}
           />
         );
