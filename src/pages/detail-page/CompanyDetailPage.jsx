@@ -59,6 +59,7 @@ const MOCK_PAGINATION = { currentPage: 1, totalPages: 5 };
 
 function CompanyDetailPage() {
   const [openKebabId, setOpenKebabId] = useState(null);
+  const openKebabIdRef = useRef(openKebabId);
 
   function handleKebabToggle(id) {
     setOpenKebabId(openKebabId === id ? null : id);
@@ -74,11 +75,17 @@ function CompanyDetailPage() {
   const tableRef = useRef(null);
 
   // 드롭다운 밖을 누르면 닫히는 로직
+
+  useEffect(() => {
+    openKebabIdRef.current = openKebabId;
+  });
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (tableRef.current && !tableRef.current.contains(event.target)) {
-        if (openKebabId === null) return;
-        setOpenKebabId(null);
+        if (openKebabIdRef.current !== null) {
+          setOpenKebabId(null);
+        }
       }
     }
 
