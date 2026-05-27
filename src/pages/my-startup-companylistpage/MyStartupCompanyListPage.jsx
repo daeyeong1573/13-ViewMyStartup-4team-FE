@@ -5,6 +5,12 @@ import SearchBar from "@/components/ui/SearchBar";
 import StartupTable from "./MyStartupCompanyListPageTable";
 import Pagination from "@/components/common/Pagination";
 
+import codeitLogo from "@/assets/CompanyLogo/codeit.png";
+import mathpressoLogo from "@/assets/CompanyLogo/mathpresso.png";
+import riiidLogo from "@/assets/CompanyLogo/riiid.png";
+import eliceLogo from "@/assets/CompanyLogo/elice.png";
+import mildangLogo from "@/assets/CompanyLogo/mildang.png";
+
 const COMPANY_NAME_TEMPLATES = [
   "코드잇",
   "매스프레소",
@@ -12,6 +18,15 @@ const COMPANY_NAME_TEMPLATES = [
   "엘리스",
   "아이헤이트플라잉버그스",
 ];
+
+const LOGO_MAP = {
+  코드잇: codeitLogo,
+  매스프레소: mathpressoLogo,
+  뤼이드: riiidLogo,
+  엘리스: eliceLogo,
+  아이헤이트플라잉버그스: mildangLogo,
+};
+
 const CATEGORY_TEMPLATES = ["에듀테크"];
 const INVESTMENT_TEMPLATES = ["140억 원", "150억 원", "10억 원"];
 const REVENUE_TEMPLATES = [
@@ -24,25 +39,29 @@ const REVENUE_TEMPLATES = [
 const EMPLOYEE_TEMPLATES = ["68명", "40명", "102명", "13명", "97명"];
 
 const generateMockData = () => {
-  return Array.from({ length: 100 }, (_, index) => ({
-    id: index + 1,
-    rank: index + 1,
-    name: COMPANY_NAME_TEMPLATES[index % COMPANY_NAME_TEMPLATES.length],
-    description:
-      "코드잇은 '온라인 코딩 교육 서비스'를 운영하는 EdTech 스타트업입니다...",
-    category: CATEGORY_TEMPLATES[0],
-    cumulativeInvestment:
-      INVESTMENT_TEMPLATES[index % INVESTMENT_TEMPLATES.length],
-    annualRevenue: REVENUE_TEMPLATES[index % REVENUE_TEMPLATES.length],
-    employeeCount: EMPLOYEE_TEMPLATES[index % EMPLOYEE_TEMPLATES.length],
-  }));
+  return Array.from({ length: 100 }, (_, index) => {
+    const name = COMPANY_NAME_TEMPLATES[index % COMPANY_NAME_TEMPLATES.length];
+    return {
+      id: index + 1,
+      rank: index + 1,
+      name: name,
+      logo: LOGO_MAP[name],
+      description:
+        "코드잇은 '온라인 코딩 교육 서비스'를 운영하는 EdTech 스타트업입니다...",
+      category: CATEGORY_TEMPLATES[0],
+      cumulativeInvestment:
+        INVESTMENT_TEMPLATES[index % INVESTMENT_TEMPLATES.length],
+      annualRevenue: REVENUE_TEMPLATES[index % REVENUE_TEMPLATES.length],
+      employeeCount: EMPLOYEE_TEMPLATES[index % EMPLOYEE_TEMPLATES.length],
+    };
+  });
 };
 
 const STARTUP_DATA = generateMockData();
 
 const SortDropdown = ({ value, onChange }) => (
   <select className={styles.sortDropdown} value={value} onChange={onChange}>
-    <option value="rank">기본 순</option>
+    <option value="rank">등수순</option>
     <option value="revenue">매출액 높은순</option>
     <option value="investment">투자액 높은순</option>
   </select>

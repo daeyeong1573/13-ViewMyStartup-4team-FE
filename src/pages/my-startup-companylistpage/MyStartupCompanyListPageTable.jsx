@@ -1,7 +1,6 @@
-// CSS Module 임포트
 import styles from "./MyStartupCompanyListPage.module.css";
 
-const StartupTable = ({ data }) => {
+const MyStartupCompanyListPageTable = ({ data }) => {
   return (
     <div className={styles.tableContainer}>
       <table className={styles.startupTable}>
@@ -22,7 +21,15 @@ const StartupTable = ({ data }) => {
               <tr key={startup.id}>
                 <td className={styles.center}>{startup.rank || "-"}위</td>
                 <td className={styles.companyName}>
-                  <div className={styles.companyLogoPlaceholder}></div>
+                  {startup.logo ? (
+                    <img
+                      src={startup.logo}
+                      alt={`${startup.name} 로고`}
+                      className={styles.companyLogo}
+                    />
+                  ) : (
+                    <div className={styles.companyLogoPlaceholder}></div>
+                  )}
                   {startup.name}
                 </td>
                 <td className={styles.description}>
@@ -57,4 +64,4 @@ const StartupTable = ({ data }) => {
   );
 };
 
-export default StartupTable;
+export default MyStartupCompanyListPageTable;
