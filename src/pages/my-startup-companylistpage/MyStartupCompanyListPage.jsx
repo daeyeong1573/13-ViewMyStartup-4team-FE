@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import styles from "./MyStartupCompanyListPage.module.css";
 
 import SearchBar from "@/components/ui/SearchBar";
@@ -19,6 +19,7 @@ const COMPANY_NAME_TEMPLATES = [
   "아이헤이트플라잉버그스",
 ];
 
+// 기업명에 맞는 이미지 매핑 객체
 const LOGO_MAP = {
   코드잇: codeitLogo,
   매스프레소: mathpressoLogo,
@@ -45,7 +46,7 @@ const generateMockData = () => {
       id: index + 1,
       rank: index + 1,
       name: name,
-      logo: LOGO_MAP[name],
+      logo: LOGO_MAP[name], // 매핑된 이미지 변수를 데이터에 추가
       description:
         "코드잇은 '온라인 코딩 교육 서비스'를 운영하는 EdTech 스타트업입니다...",
       category: CATEGORY_TEMPLATES[0],
@@ -72,16 +73,23 @@ const MyStartupCompanyListPage = () => {
   const [sortOption, setSortOption] = useState("rank");
   const itemsPerPage = 15;
 
-  const sortedStartups = [...STARTUP_DATA].sort((a, b) => {
-    if (sortOption === "rank") return a.rank - b.rank;
-    const valA = parseInt(
-      sortOption === "revenue" ? a.annualRevenue : a.cumulativeInvestment,
+  const [searchTerm, setSearchTerm] = useState("");
+  const sortedStartups = useMemo(() => {
+    const filtered = STARTUP_DATA.filter((startup) =>
+      startup.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
-    const valB = parseInt(
-      sortOption === "revenue" ? b.annualRevenue : b.cumulativeInvestment,
-    );
-    return valB - valA;
-  });
+
+    return filtered.sort((a, b) => {
+      if (sortOption === "rank") return a.rank - b.rank;
+      const valA = parseInt(
+        sortOption === "revenue" ? a.annualRevenue : a.cumulativeInvestment,
+      );
+      const valB = parseInt(
+        sortOption === "revenue" ? b.annualRevenue : b.cumulativeInvestment,
+      );
+      return valB - valA;
+    });
+  }, [searchTerm, sortOption]);
 
   const totalPages = Math.ceil(sortedStartups.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -98,7 +106,17 @@ const MyStartupCompanyListPage = () => {
 
           <div className={styles.listControls}>
             <div className={styles.searchWrapper}>
-              <SearchBar />
+              <SearchBar
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                onClear={() => {
+                  setSearchTerm("");
+                  setCurrentPage(1);
+                }}
+              />
             </div>
 
             <SortDropdown
