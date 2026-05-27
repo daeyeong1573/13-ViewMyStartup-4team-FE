@@ -5,6 +5,7 @@ import kebabIcon from "@/assets/icons/ic_kebab.png";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { formatCurrencyToKorea } from "@/utils/format";
 import Pagination from "@/components/common/Pagination";
+import DeleteModal from "./DeleteModal";
 
 //임시 데이터
 const MOCK_COMPANY = {
@@ -73,6 +74,18 @@ function CompanyDetailPage() {
   const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
 
   const tableRef = useRef(null);
+
+  // 모달 관련 로직
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
+  function handleCloseModal() {
+    setIsDeleteModalOpen(false);
+    setPassword("");
+    setError("");
+  }
 
   // 드롭다운 밖을 누르면 닫히는 로직
 
@@ -253,9 +266,22 @@ function CompanyDetailPage() {
                           </button>
                           <button
                             className={`${styles.dropdownItem} ${styles.deleteText}`}
+                            onClick={() => setIsDeleteModalOpen(true)}
                           >
                             삭제하기
                           </button>
+                          {isDeleteModalOpen && (
+                            <DeleteModal
+                              isOpen={isDeleteModalOpen}
+                              onClose={handleCloseModal}
+                              password={password}
+                              onPassWordChange={setPassword}
+                              onConfirm={() =>
+                                console.log("삭제 실행:", password)
+                              }
+                              error={error}
+                            />
+                          )}
                         </div>
                       )}
                     </div>
