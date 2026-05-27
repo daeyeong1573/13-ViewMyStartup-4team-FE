@@ -5,6 +5,8 @@ import kebabIcon from "@/assets/icons/ic_kebab.png";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { formatCurrencyToKorea } from "@/utils/format";
 import Pagination from "@/components/common/Pagination";
+import DeleteModal from "./DeleteModal";
+import Popup from "@/components/common/Popup";
 
 //임시 데이터
 const MOCK_COMPANY = {
@@ -59,6 +61,7 @@ const MOCK_PAGINATION = { currentPage: 1, totalPages: 5 };
 
 function CompanyDetailPage() {
   const [openKebabId, setOpenKebabId] = useState(null);
+  const openKebabIdRef = useRef(openKebabId);
 
   function handleKebabToggle(id) {
     setOpenKebabId(openKebabId === id ? null : id);
@@ -73,12 +76,48 @@ function CompanyDetailPage() {
 
   const tableRef = useRef(null);
 
+  // 모달 관련 로직
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
+
+  function handleOpenDeleteModal(id) {
+    setDeletingId(id);
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalOpen(false);
+    setDeletingId(null);
+    setPassword("");
+  }
+
+  function handleConfirmDelete() {
+    if (password !== "1234") //api 연동 전 임시로
+    {
+      setIsDeleteModalOpen(false);
+      setIsErrorPopupOpen(true);
+      setPassword("");
+      return;
+    }
+    console.log(`${deletingId}번 항목 삭제 실행`);
+    handleCloseDeleteModal();
+  }
+
   // 드롭다운 밖을 누르면 닫히는 로직
+
+  useEffect(() => {
+    openKebabIdRef.current = openKebabId;
+  });
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (tableRef.current && !tableRef.current.contains(event.target)) {
-        if (openKebabId === null) return;
-        setOpenKebabId(null);
+        if (openKebabIdRef.current !== null) {
+          setOpenKebabId(null);
+        }
       }
     }
 
@@ -234,6 +273,7 @@ function CompanyDetailPage() {
                   >
                     <div className={styles.kebabWrapper}>
                       <button
+                        type="button"
                         onClick={() => handleKebabToggle(item.id)}
                         className={styles.kebabBtn}
                       >
@@ -241,11 +281,13 @@ function CompanyDetailPage() {
                       </button>
                       {openKebabId === item.id && (
                         <div className={styles.kebabDropdown}>
-                          <button className={styles.dropdownItem}>
+                          <button type="button" className={styles.dropdownItem}>
                             수정하기
                           </button>
                           <button
+                            type="button"
                             className={`${styles.dropdownItem} ${styles.deleteText}`}
+                            onClick={() => handleOpenDeleteModal(item.id)}
                           >
                             삭제하기
                           </button>
@@ -263,6 +305,23 @@ function CompanyDetailPage() {
           </div>
         </section>
       </div>
+
+      {isDeleteModalOpen && (
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          password={password}
+          onPasswordChange={setPassword}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
+      {isErrorPopupOpen && (
+        <Popup
+          onClose={() => setIsErrorPopupOpen(false)}
+          onConfirm={() => setIsErrorPopupOpen(false)}
+          children="잘못된 비밀번호로 삭제에 실패하셨습니다."
+        ></Popup>
+      )}
     </div>
   );
 }
