@@ -69,7 +69,10 @@ export default function MyStartupCompareSelectPage() {
     setFilter((prev) => ({ ...prev, search: "", currentPage: 1 }));
   };
 
-  const handleReset = () => {};
+  const handleReset = () => {
+    resetCompanies();
+    cancelCompany();
+  };
 
   const handleCompanyRemove = (company) => {
     removeCompany(company.id);
