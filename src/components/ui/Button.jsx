@@ -7,12 +7,7 @@ function Button({ children, onClick, variant = "solid", status = "active" }) {
   const buttonClass = [styles.base, styles[variant], styles[status]].join(" ");
 
   return (
-    <button
-      type="button"
-      className={buttonClass}
-      onClick={onClick}
-      disabled={status === "inactive"}
-    >
+    <button type="button" className={buttonClass} onClick={onClick}>
       {variant === "reset" && (
         <img
           src={status === "inactive" ? RestartIcon : WhiteRestartIcon}
