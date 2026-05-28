@@ -11,8 +11,7 @@ export default function CompareStatusPage() {
     { label: "실제 누적 투자 금액 낮은순", value: "investmentAmount_asc" },
   ];
 
-  // currentSort의 초기값으로 첫 번째 옵션 객체를 할당합니다.
-  const [currentSort, setCurrentSort] = useState(comparePageOptions[0]);
+  const [currentSort, setCurrentSort] = useState(comparePageOptions);
   const [startups, setStartups] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,9 +23,8 @@ export default function CompareStatusPage() {
           currentSort && typeof currentSort === "object"
             ? currentSort.value
             : currentSort;
-
         const response = await fetch(
-          `http://localhost:3000/startups?orderBy=${sortValue}&page=${page}&limit=5`,
+          `http://localhost:3000/compare/status?orderBy=${sortValue}&page=${page}&limit=10`,
         );
         const resBody = await response.json();
         setStartups(resBody.data || []);
@@ -50,7 +48,6 @@ export default function CompareStatusPage() {
               options={comparePageOptions}
               selected={currentSort}
               onSelect={(chosenOption) => {
-                // 💥 드롭다운 클릭 시 넘어오는 값(객체든 문자열이든) 상태에 그대로 주입
                 setCurrentSort(chosenOption);
                 setPage(1);
               }}
@@ -58,45 +55,68 @@ export default function CompareStatusPage() {
           </div>
         </div>
 
-        {/* 간소화된 기업 리스트 */}
-        <div className={styles.listContainer}>
-          {startups.map((startup, index) => (
-            <div key={startup.id} className={styles.startupListItem}>
-              <div className={styles.leftSection}>
-                <div className={styles.rankNumber}>
-                  {(page - 1) * 5 + index + 1}
-                </div>
-                <div className={styles.logoContainer}>
-                  {startup.imgUrl && (
-                    <img
-                      src={startup.imgUrl}
-                      alt="로고"
-                      className={styles.logoImage}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.middleSection}>
-                <h3 className={styles.startupName}>{startup.name}</h3>
-                <span className={styles.categoryTag}>{startup.category}</span>
-                <p className={styles.startupDescription}>
-                  {startup.description}
-                </p>
-              </div>
-
-              <div className={styles.rightSection}>
-                <div className={styles.metaDataBlock}>
-                  <span>나의 기업 선택 횟수 : </span>
-                  <strong>{startup.myStartupCount}회</strong>
-                </div>
-                <div className={styles.metaDataBlock}>
-                  <span>실제 누적 투자 금액 : </span>
-                  <strong>{startup.totalInvestment}</strong>
-                </div>
-              </div>
+        <div className={styles.tableWrapper}>
+          {/* ① 상단 헤더 라인 (기존 유지: 기업 명 제목 위치 고정) */}
+          <div className={styles.tableHeaderContainer}>
+            <div className={styles.tableHeaderRow}>
+              <div className={styles.colRank}>순위</div>
+              <div className={styles.colCompany}>기업 명</div>{" "}
+              {/* ◀ 헤더 제목은 그대로 유지 */}
+              <div className={styles.colIntro}>기업 소개</div>
+              <div className={styles.colCategory}>카테고리</div>
+              <div className={styles.colCount}>나의 기업 선택 횟수</div>
+              <div className={styles.colInvestment}>실제 누적 투자 금액</div>
             </div>
-          ))}
+          </div>
+
+          <div className={styles.tableBodyContainer}>
+            {startups.map((startup, index) => (
+              <div key={startup.id} className={styles.tableBodyRow}>
+                <div className={styles.colRank}>
+                  {(page - 1) * 10 + index + 1}위
+                </div>
+
+                <div className={styles.colCompanyBody}>
+                  <div className={styles.logoWrapper}>
+                    {startup.imgUrl && (
+                      <img
+                        src={startup.imgUrl}
+                        alt="로고"
+                        className={styles.companyLogo}
+                      />
+                    )}
+                  </div>
+                  <span className={styles.companyNameText}>{startup.name}</span>
+                </div>
+
+                <div className={styles.colIntro}>
+                  <div className={styles.introFlexWrapper}>
+                    <p className={styles.introParagraph}>
+                      {startup.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.colCategory}>
+                  <span className={styles.categoryNameText}>
+                    {startup.category}
+                  </span>
+                </div>
+
+                <div className={styles.colCount}>
+                  <span className={styles.countText}>
+                    {(startup.myStartupCount || 0).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className={styles.colInvestment}>
+                  <strong className={styles.investmentText}>
+                    {(startup.totalInvestment || 0).toLocaleString()}
+                  </strong>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className={styles.paginationWrapper}>
