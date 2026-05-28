@@ -9,6 +9,7 @@ import DeleteModal from "./DeleteModal";
 import Popup from "@/components/common/Popup";
 import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
+import { StartupDetailApi } from "@/services/startupDetailService";
 
 function CompanyDetailPage() {
   const { id: dummyId } = useParams();
@@ -99,16 +100,18 @@ function CompanyDetailPage() {
     setPassword("");
   }
 
-  function handleConfirmDelete() {
-    if (password !== "1234") //api 연동 전 임시로
-    {
+  async function handleConfirmDelete() {
+    try {
+      await StartupDetailApi.deleteInvestment(deletingId, password);
+      console.log(`${deletingId} 항목 삭제 실행`);
+      handleCloseDeleteModal();
+      refetch();
+    } catch (error) {
+      console.error(error.message);
       setIsDeleteModalOpen(false);
       setIsErrorPopupOpen(true);
       setPassword("");
-      return;
     }
-    console.log(`${deletingId}번 항목 삭제 실행`);
-    handleCloseDeleteModal();
   }
 
   return (

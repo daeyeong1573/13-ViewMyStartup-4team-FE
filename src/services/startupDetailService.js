@@ -8,7 +8,9 @@ export const StartupDetailApi = {
     return await API.get(`${STARTUPS_ENDPOINT}/${id}?${query}`);
   },
 
-  async deleteInvestment(id, password) {
-    return await API.delete(`${INVESTMENTS_ENDPOINT}/${id}`, { password });
+  async deleteInvestment(investmentsId, password) {
+    return await API.delete(`${INVESTMENTS_ENDPOINT}/${investmentsId}`, {
+      password,
+    });
   },
 };
