@@ -6,8 +6,10 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
+  overflow: auto;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
   z-index: 1000;
 }
 
@@ -15,6 +17,7 @@
   max-width: 31rem;
   width: 100%;
   display: flex;
+  margin: auto;
   padding: 1.5rem;
   flex-direction: column;
   align-items: center;
