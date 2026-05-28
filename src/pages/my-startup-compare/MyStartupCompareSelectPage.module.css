@@ -2,7 +2,7 @@
   background: var(--black-black_400);
   height: 100vh;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   position: fixed;
 }
 
