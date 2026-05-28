@@ -11,9 +11,10 @@ import Modal from "@/components/common/Modal";
 import SearchBar from "@/components/ui/SearchBar";
 import Pagination from "@/components/common/Pagination";
 import MyCompanyModalItem from "./MyCompanyModalItem";
-import { useCompareCompanyStorage } from "@/hooks/useCompareCompanyStorage";
 import Button from "@/components/ui/Button";
 import { MAX_SIZE } from "@/constants/company";
+import usePostCompareCompany from "@/hooks/usePostCompareCompany";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_FILTER = {
   search: "",
@@ -23,6 +24,8 @@ const INITIAL_FILTER = {
 };
 
 export default function MyStartupCompareSelectPage() {
+  const navigate = useNavigate();
+
   //내가선택한 기업 UI
   const { myCompany, selectCompany, cancelCompany } = useMyCompany();
   //저장된 선택했던 기업 목록
@@ -36,13 +39,7 @@ export default function MyStartupCompareSelectPage() {
     resetCompanies,
   } = useCompareCompany();
 
-  //저장된 비교 기업
-  const {
-    compareStorageList,
-    addCompareStorageCompany,
-    removeCompareCompany,
-    clearCompareCompanies,
-  } = useCompareCompanyStorage();
+  const { postCompare } = usePostCompareCompany();
 
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const [inputValue, setInputValue] = useState("");
@@ -92,7 +89,18 @@ export default function MyStartupCompareSelectPage() {
 
   const handleCompareCompanySelect = (company) => {
     addCompareCompany(company);
-    addCompareStorageCompany(company);
+  };
+
+  const handlePostCompare = () => {
+    const compareStartupIds = compareCompanyList.map((c) => c.id);
+    const myStartupId = myCompany.id;
+    if (!myStartupId || compareStartupIds.length === 0) return;
+    if (postCompare({ myStartupId, compareStartupIds })) {
+      navigate("/mycompare/result", {
+        state: { myStartupId, compareStartupIds },
+        replace: true,
+      });
+    }
   };
 
   return (
@@ -146,6 +154,7 @@ export default function MyStartupCompareSelectPage() {
             type="button"
             disabled={!isCompareActive}
             aria-disabled={!isCompareActive}
+            onClick={handlePostCompare}
           >
             기업 비교하기
           </button>

@@ -6,6 +6,7 @@ import InvestmentStatusPage from "./pages/investment-status/InvestmentStatusPage
 import CompareStatusPage from "./pages/CompareStatusPage";
 import MyStartupCompareSelectPage from "./pages/my-startup-compare/MyStartupCompareSelectPage";
 import CompanyDetailPage from "./pages/detail-page/CompanyDetailPage";
+import CompareResultPage from "./pages/my-startup-compare/CompareResultPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<CompanyListPage />} />
           <Route path="mycompare" element={<MyStartupCompareSelectPage />} />
+          <Route path="mycompare/result" element={<CompareResultPage />} />
           <Route path="comparestat" element={<CompareStatusPage />} />
           <Route path="investstat" element={<InvestmentStatusPage />} />
           {/* 임시 라우트 */}
