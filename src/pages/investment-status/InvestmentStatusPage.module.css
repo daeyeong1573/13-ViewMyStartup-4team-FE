@@ -42,8 +42,7 @@
   width: 100%;
   font-weight: 500;
   background-color: var(--black-black_100);
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+  border-radius: 0.5rem;
   border: none;
   margin-bottom: 0.625rem;
 }
@@ -53,8 +52,7 @@
   width: 100%;
   font-weight: 500;
   background-color: var(--black-black_200);
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  border-radius: 0.5rem;
   overflow: hidden;
   border: none;
 }
