@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import CompanyListPage from "./pages/my-startup-companylistpage/MyStartupCompanyListPage";
+import MyStartupCompanyListPage from "./pages/my-startup-companylistpage/MyStartupCompanyListPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./layouts/Layout";
 import InvestmentStatusPage from "./pages/InvestmentStatusPage";
@@ -12,7 +12,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<CompanyListPage />} />
+          <Route index element={<MyStartupCompanyListPage />} />
           <Route path="mycompare" element={<MyStartupCompareSelectPage />} />
           <Route path="comparestat" element={<CompareStatusPage />} />
           <Route path="investstat" element={<InvestmentStatusPage />} />
