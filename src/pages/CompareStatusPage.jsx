@@ -24,6 +24,7 @@ export default function CompareStatusPage() {
             ? currentSort.value
             : currentSort;
         const response = await fetch(
+          //임시로 로컬호스트 주소 사용
           `http://localhost:3000/compare/status?orderBy=${sortValue}&page=${page}&limit=10`,
         );
         const resBody = await response.json();
@@ -56,12 +57,10 @@ export default function CompareStatusPage() {
         </div>
 
         <div className={styles.tableWrapper}>
-          {/* ① 상단 헤더 라인 (기존 유지: 기업 명 제목 위치 고정) */}
           <div className={styles.tableHeaderContainer}>
             <div className={styles.tableHeaderRow}>
               <div className={styles.colRank}>순위</div>
               <div className={styles.colCompany}>기업 명</div>{" "}
-              {/* ◀ 헤더 제목은 그대로 유지 */}
               <div className={styles.colIntro}>기업 소개</div>
               <div className={styles.colCategory}>카테고리</div>
               <div className={styles.colCount}>나의 기업 선택 횟수</div>
