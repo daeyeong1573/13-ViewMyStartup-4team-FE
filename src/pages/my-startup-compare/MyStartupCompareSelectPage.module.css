@@ -1,7 +1,9 @@
 .mainContainer {
   background: var(--black-black_400);
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
+  overflow: auto;
+  position: fixed;
 }
 
 .inner {
@@ -22,6 +24,12 @@
   cursor: pointer;
 }
 
+.addCompareBtn:disabled {
+  color: var(--gray-gray_200);
+  background-color: var(--black-black_100);
+  cursor: auto;
+}
+
 .addCompareBtn:hover {
   opacity: 0.9;
 }
@@ -30,6 +38,7 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .compareBtn {
@@ -53,17 +62,8 @@
   opacity: 0.9;
 }
 
-/* Modal */
-
-.modalHeader {
-  margin-top: 1.5rem;
-  color: var(--white-white);
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
-.listItem {
+.maxTxt {
+  color: var(--red-red_error);
   margin-top: 1rem;
+  margin-left: 0.5rem;
 }

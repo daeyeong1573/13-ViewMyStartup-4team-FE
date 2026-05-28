@@ -3,14 +3,16 @@ import { getStorage, setStorage } from "@/utils/storage";
 import { useState, useMemo } from "react";
 
 export function useMyCompanyStorage() {
-  const [myCompanyList, setMyCompanyList] = useState(() => getStorage(KEYS.my));
+  const [myCompanyStorageList, setMyCompanyStorageList] = useState(() =>
+    getStorage(KEYS.my),
+  );
 
   const sortedList = useMemo(
-    () => [...myCompanyList].reverse(),
-    [myCompanyList],
+    () => [...myCompanyStorageList].reverse(),
+    [myCompanyStorageList],
   );
-  const addMyCompany = (company) => {
-    setMyCompanyList((prev) => {
+  const addMyCompanyStorage = (company) => {
+    setMyCompanyStorageList((prev) => {
       const filtered = prev.filter((c) => c.id !== company.id);
 
       // 5개 초과 시 가장 오래된 것 제거
@@ -24,5 +26,5 @@ export function useMyCompanyStorage() {
     });
   };
 
-  return { myCompanyList: sortedList, addMyCompany };
+  return { myCompanyStorageList: sortedList, addMyCompanyStorage };
 }
