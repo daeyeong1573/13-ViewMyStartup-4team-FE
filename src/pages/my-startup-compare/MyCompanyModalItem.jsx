@@ -5,7 +5,7 @@ import CompanyListItem from "@/components/ui/CompanyListItem";
 export default function MyCompanyModalItem({
   title = "",
   total = 0,
-  list = {},
+  list = [],
   handleClick,
   buttonText = "선택하기",
   status = "active",

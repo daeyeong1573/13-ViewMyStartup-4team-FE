@@ -50,8 +50,6 @@ export default function MyStartupCompareSelectPage() {
   const { search, currentPage, limit, orderBy } = filter;
   //모달 상태
   const [isModalOpen, setIsModalOpen] = useState({ my: false, compare: false });
-  //검색결과
-  const [isSearch, setIsSearch] = useState(false);
 
   const { companyList, pagination } = useGetStartupList({
     search,
@@ -63,13 +61,11 @@ export default function MyStartupCompareSelectPage() {
   const isCompareActive = myCompany && compareCompanyList.length >= 1;
 
   const handleSearch = () => {
-    setIsSearch(true);
     setFilter((prev) => ({ ...prev, search: inputValue, currentPage: 1 }));
   };
 
   const handleClear = () => {
     setInputValue("");
-    setIsSearch(false);
     setFilter((prev) => ({ ...prev, search: "", currentPage: 1 }));
   };
 
@@ -80,7 +76,6 @@ export default function MyStartupCompareSelectPage() {
   };
 
   const handleModalClose = (type) => {
-    setIsSearch(false);
     setInputValue("");
     setIsModalOpen((prev) => ({ ...prev, [type]: false }));
     setFilter(INITIAL_FILTER);
@@ -176,7 +171,7 @@ export default function MyStartupCompareSelectPage() {
             />
           )}
 
-          {isSearch && (
+          {
             <>
               <MyCompanyModalItem
                 title="검색 결과"
@@ -193,7 +188,7 @@ export default function MyStartupCompareSelectPage() {
                 }
               />
             </>
-          )}
+          }
         </Modal>
       )}
       {/* 비교 기업 모달 */}
@@ -220,7 +215,7 @@ export default function MyStartupCompareSelectPage() {
             />
           )}
 
-          {isSearch && (
+          {
             <>
               <MyCompanyModalItem
                 title="검색 결과"
@@ -242,7 +237,7 @@ export default function MyStartupCompareSelectPage() {
                 }
               />
             </>
-          )}
+          }
         </Modal>
       )}
     </main>
