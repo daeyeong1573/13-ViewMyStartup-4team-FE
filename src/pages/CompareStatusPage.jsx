@@ -7,8 +7,8 @@ export default function CompareStatusPage() {
   const comparePageOptions = [
     { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
     { label: "나의 기업 선택 횟수 낮은순", value: "myStartupCount_asc" },
-    { label: "실제 누적 투자 금액 높은순", value: "investmentAmount_desc" },
-    { label: "실제 누적 투자 금액 낮은순", value: "investmentAmount_asc" },
+    { label: "비교 기업 선택 횟수 높은순", value: "compareStartupCount_desc" },
+    { label: "비교 기업 선택 횟수 낮은순", value: "compareStartupCount_asc" },
   ];
 
   const [currentSort, setCurrentSort] = useState(comparePageOptions);
@@ -64,7 +64,7 @@ export default function CompareStatusPage() {
               <div className={styles.colIntro}>기업 소개</div>
               <div className={styles.colCategory}>카테고리</div>
               <div className={styles.colCount}>나의 기업 선택 횟수</div>
-              <div className={styles.colInvestment}>실제 누적 투자 금액</div>
+              <div className={styles.colInvestment}>비교 기업 선택 횟수</div>
             </div>
           </div>
 
@@ -110,7 +110,7 @@ export default function CompareStatusPage() {
 
                 <div className={styles.colInvestment}>
                   <strong className={styles.investmentText}>
-                    {(startup.totalInvestment || 0).toLocaleString()}
+                    {(startup.compareStartupCount || 0).toLocaleString()}
                   </strong>
                 </div>
               </div>
