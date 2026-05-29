@@ -20,7 +20,7 @@ export function useCompareCompanyStorage() {
   };
 
   const removeCompareCompany = (id) => {
-    setCompareList((prev) => {
+    setCompareStorageList((prev) => {
       const updated = prev.filter((c) => c.id !== id);
       setStorage(KEYS.compare, updated);
       return updated;
