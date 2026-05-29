@@ -28,7 +28,12 @@ function DeleteModal({
           onChange={(e) => onPasswordChange(e.target.value)}
         />
         <div className={styles.btnWrapper}>
-          <Button type="submit" variant="solid" status="active">
+          <Button
+            type="button"
+            variant="solid"
+            status="active"
+            onClick={onConfirm}
+          >
             삭제하기
           </Button>
         </div>

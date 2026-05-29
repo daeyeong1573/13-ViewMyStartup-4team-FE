@@ -1,13 +1,19 @@
 import { BASE_URL } from "@/constants/api.js";
 
 async function request(endpoint, options = {}) {
+  const { body, ...customConfig } = options;
+
   const config = {
-    ...options,
+    ...customConfig,
     headers: {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...customConfig.headers,
     },
   };
+
+  if (body) {
+    config.body = JSON.stringify(body);
+  }
 
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, config);
@@ -27,12 +33,12 @@ async function request(endpoint, options = {}) {
 
 export const API = {
   get: (endpoint) => request(endpoint),
-  post: (endpoint, data) =>
-    request(endpoint, { method: "POST", body: JSON.stringify(data) }),
-  patch: (endpoint, data) =>
-    request(endpoint, { method: "PATCH", body: JSON.stringify(data) }),
-  delete: (endpoint) => request(endpoint, { method: "DELETE" }),
+  post: (endpoint, data) => request(endpoint, { method: "POST", body: data }),
+  patch: (endpoint, data) => request(endpoint, { method: "PATCH", body: data }),
+  delete: (endpoint, data) =>
+    request(endpoint, { method: "DELETE", body: data }),
 };
+
 //[GET] 투자 현황 리스트 조회 API
 export const getInvestmentStatusList = async ({
   page = 1,
