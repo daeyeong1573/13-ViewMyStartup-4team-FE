@@ -36,10 +36,8 @@ function CompanyDetailPage() {
     () => data?.investmentList?.pagination || { totalPages: 1, page: 1 },
     [data],
   );
-  const totalAmountSum = useMemo(
-    () => investments.reduce((acc, cur) => acc + (Number(cur.amount) || 0), 0),
-    [investments],
-  );
+
+  const totalAmountSum = data?.virtualInvestmentTotal || 0;
 
   const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
 
