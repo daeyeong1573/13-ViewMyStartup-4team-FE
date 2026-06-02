@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import styles from "./MyStartupCompanyListPage.module.css";
 
 import SearchBar from "@/components/ui/SearchBar";
@@ -58,9 +58,7 @@ const generateMockData = () => {
 };
 
 const STARTUP_DATA = generateMockData();
-
 const SORT_OPTIONS = [
-  { label: "등수순", value: "rank" },
   { label: "누적 투자금액 높은순", value: "invest_desc" },
   { label: "누적 투자금액 낮은순", value: "invest_asc" },
   { label: "매출액 높은순", value: "revenue_desc" },

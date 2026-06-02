@@ -24,7 +24,7 @@ export default function CompareCardContent({
             image={company.imgUrl}
             name={company.name}
             category={company.category}
-            onRemove={() => onRemove(company.id)}
+            onRemove={() => onRemove(company)}
           />
         </li>
       ))}

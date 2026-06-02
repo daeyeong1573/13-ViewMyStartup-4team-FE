@@ -1,15 +1,20 @@
 import styles from "./MyStartupCompareSelectPage.module.css";
 import { useState } from "react";
 import { useMyCompany } from "@/hooks/useMyCompany";
+import { useMyCompanyStorage } from "@/hooks/useMyCompanyStorage";
+import { useGetStartupList } from "@/hooks/useGetStartupList";
+import { useCompareCompany } from "@/hooks/useCompareCompany";
 import CardArea from "@/components/common/startup-compare/CardArea";
 import CompareCardContent from "@/components/common/startup-compare/CompareCardContent";
 import MyCompanyCardContent from "@/components/common/startup-compare/MyCompanyCardContent";
 import Modal from "@/components/common/Modal";
 import SearchBar from "@/components/ui/SearchBar";
-import CompanyListItem from "@/components/ui/CompanyListItem";
-import { useMyCompanyStorage } from "@/hooks/useMyCompanyStorage";
-import { useGetStartupList } from "@/hooks/useGetStartupList";
 import Pagination from "@/components/common/Pagination";
+import MyCompanyModalItem from "./MyCompanyModalItem";
+import Button from "@/components/ui/Button";
+import { MAX_SIZE } from "@/constants/company";
+import usePostCompareCompany from "@/hooks/usePostCompareCompany";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_FILTER = {
   search: "",
@@ -19,17 +24,30 @@ const INITIAL_FILTER = {
 };
 
 export default function MyStartupCompareSelectPage() {
+  const navigate = useNavigate();
+
+  //내가선택한 기업 UI
   const { myCompany, selectCompany, cancelCompany } = useMyCompany();
-  const [compareCompanies, setCompareCompanies] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState({ my: false, compare: false });
-  const [isSearch, setIsSearch] = useState(false);
+  //저장된 선택했던 기업 목록
+  const { myCompanyStorageList, addMyCompanyStorage } = useMyCompanyStorage();
+
+  //비교기업 리스트
+  const {
+    compareCompanyList,
+    addCompareCompany,
+    removeCompany,
+    resetCompanies,
+  } = useCompareCompany();
+
+  const { postCompare } = usePostCompareCompany();
 
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const [inputValue, setInputValue] = useState("");
 
   const { search, currentPage, limit, orderBy } = filter;
+  //모달 상태
+  const [isModalOpen, setIsModalOpen] = useState({ my: false, compare: false });
 
-  const { myCompanyList, addMyCompany } = useMyCompanyStorage();
   const { companyList, pagination } = useGetStartupList({
     search,
     page: currentPage,
@@ -37,26 +55,27 @@ export default function MyStartupCompareSelectPage() {
     orderBy,
   });
 
-  const isCompareActive = myCompany && compareCompanies.length >= 1;
+  const isCompareActive = myCompany && compareCompanyList.length >= 1;
 
   const handleSearch = () => {
-    if (inputValue.trim() === "") return;
-    setIsSearch(true);
     setFilter((prev) => ({ ...prev, search: inputValue, currentPage: 1 }));
   };
 
   const handleClear = () => {
     setInputValue("");
-    setIsSearch(false);
     setFilter((prev) => ({ ...prev, search: "", currentPage: 1 }));
   };
 
-  const handleCompanyRemove = (id) => {
-    setCompareCompanies((prev) => prev.filter((c) => c.id !== id));
+  const handleReset = () => {
+    resetCompanies();
+    cancelCompany();
+  };
+
+  const handleCompanyRemove = (company) => {
+    removeCompany(company.id);
   };
 
   const handleModalClose = (type) => {
-    setIsSearch(false);
     setInputValue("");
     setIsModalOpen((prev) => ({ ...prev, [type]: false }));
     setFilter(INITIAL_FILTER);
@@ -64,14 +83,40 @@ export default function MyStartupCompareSelectPage() {
 
   const handleMyCompanySelect = (company) => {
     selectCompany(company);
-    addMyCompany(company);
+    addMyCompanyStorage(company);
     handleModalClose("my");
+  };
+
+  const handleCompareCompanySelect = (company) => {
+    addCompareCompany(company);
+  };
+
+  const handlePostCompare = () => {
+    const compareStartupIds = compareCompanyList.map((c) => c.id);
+    const myStartupId = myCompany.id;
+    if (!myStartupId || compareStartupIds.length === 0) return;
+    if (postCompare({ myStartupId, compareStartupIds })) {
+      navigate("/mycompare/result", {
+        state: { myStartupId, compareStartupIds },
+        replace: true,
+      });
+    }
   };
 
   return (
     <main className={styles.mainContainer}>
       <div className={styles.inner}>
-        <CardArea header="나의 기업을 선택해 주세요!" label="나의 기업 선택">
+        <CardArea
+          header="나의 기업을 선택해 주세요!"
+          label="나의 기업 선택"
+          actionButton={
+            compareCompanyList.length >= 1 && (
+              <Button variant="reset" status="active" onClick={handleReset}>
+                전체 초기화
+              </Button>
+            )
+          }
+        >
           <MyCompanyCardContent
             myCompany={myCompany}
             onAdd={() => setIsModalOpen((prev) => ({ ...prev, my: true }))}
@@ -81,7 +126,7 @@ export default function MyStartupCompareSelectPage() {
 
         {myCompany && (
           <CardArea
-            header="어떤 기업이 궁금하세요?"
+            header={`어떤 기업이 궁금하세요? (최대${MAX_SIZE}개)`}
             label="비교 기업 선택"
             actionButton={
               <button
@@ -90,13 +135,14 @@ export default function MyStartupCompareSelectPage() {
                 onClick={() =>
                   setIsModalOpen((prev) => ({ ...prev, compare: true }))
                 }
+                disabled={compareCompanyList.length >= MAX_SIZE}
               >
                 기업 추가하기
               </button>
             }
           >
             <CompareCardContent
-              compareCompanies={compareCompanies}
+              compareCompanies={compareCompanyList}
               onRemove={handleCompanyRemove}
             />
           </CardArea>
@@ -108,6 +154,7 @@ export default function MyStartupCompareSelectPage() {
             type="button"
             disabled={!isCompareActive}
             aria-disabled={!isCompareActive}
+            onClick={handlePostCompare}
           >
             기업 비교하기
           </button>
@@ -127,43 +174,24 @@ export default function MyStartupCompareSelectPage() {
           />
 
           {/*  최근 선택된 기업 */}
-          {myCompanyList.length > 0 && (
-            <>
-              <h3 className={styles.modalHeader}>
-                최근 선택된 기업 ({myCompanyList.length})
-              </h3>
-              {myCompanyList.map((company) => (
-                <CompanyListItem
-                  key={company.id}
-                  image={company.imgUrl}
-                  name={company.name}
-                  category={company.category}
-                  variant="outline"
-                  status="active"
-                  buttonText="선택하기"
-                  onButtonClick={() => handleMyCompanySelect(company)}
-                />
-              ))}
-            </>
+          {myCompanyStorageList.length > 0 && (
+            <MyCompanyModalItem
+              title="최근 선택된 기업"
+              total={myCompanyStorageList.length}
+              list={myCompanyStorageList}
+              handleClick={handleMyCompanySelect}
+            />
           )}
 
-          {isSearch && (
+          {
             <>
-              <h3 className={styles.modalHeader}>
-                검색 결과 ({pagination.total})
-              </h3>
-              {companyList.map((company) => (
-                <CompanyListItem
-                  key={company.id}
-                  image={company.imgUrl}
-                  name={company.name}
-                  category={company.category}
-                  variant="outline"
-                  status="active"
-                  buttonText="선택하기"
-                  onButtonClick={() => handleMyCompanySelect(company)}
-                />
-              ))}
+              <MyCompanyModalItem
+                title="검색 결과"
+                total={pagination.total}
+                list={companyList}
+                handleClick={handleMyCompanySelect}
+              />
+
               <Pagination
                 currentPage={currentPage}
                 totalPages={pagination.totalPages}
@@ -172,7 +200,56 @@ export default function MyStartupCompareSelectPage() {
                 }
               />
             </>
+          }
+        </Modal>
+      )}
+      {/* 비교 기업 모달 */}
+      {isModalOpen.compare && (
+        <Modal
+          title="비교 기업 선택하기"
+          onClose={() => handleModalClose("compare")}
+        >
+          <SearchBar
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onClear={handleClear}
+            onSubmit={handleSearch}
+          />
+
+          {compareCompanyList.length > 0 && (
+            <MyCompanyModalItem
+              title="선택한 기업"
+              total={compareCompanyList.length}
+              list={compareCompanyList}
+              buttonText="선택 해제"
+              status="inactive"
+              handleClick={handleCompanyRemove}
+            />
           )}
+
+          {
+            <>
+              <MyCompanyModalItem
+                title="검색 결과"
+                total={pagination.total}
+                list={companyList}
+                handleClick={handleCompareCompanySelect}
+                selectedIds={compareCompanyList.map((c) => c.id)}
+              />
+              {compareCompanyList.length >= MAX_SIZE && (
+                <p className={styles.maxTxt}>
+                  *비교할 기업은 최대 {MAX_SIZE}개까지 선택 가능합니다.
+                </p>
+              )}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={pagination.totalPages}
+                onPageChange={(page) =>
+                  setFilter((prev) => ({ ...prev, currentPage: page }))
+                }
+              />
+            </>
+          }
         </Modal>
       )}
     </main>
