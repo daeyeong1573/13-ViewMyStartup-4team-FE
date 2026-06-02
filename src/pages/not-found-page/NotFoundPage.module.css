@@ -1,0 +1,77 @@
+:global(body) {
+  background-color: var(
+    --background-color,
+    var(--bg-color, #111214)
+  ) !important;
+}
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 70vh;
+  position: relative;
+  z-index: 1;
+
+  background-color: var(--background-color, var(--bg-color, #111214));
+}
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  color: var(--gray-100, #9fa6b2);
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 80px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  line-height: 1;
+}
+
+.description {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.subDescription {
+  font-size: 16px;
+  margin: 0 0 40px 0;
+  opacity: 0.8;
+}
+
+.homeButton {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  padding: 8px 24px;
+  gap: 10px;
+
+  border-radius: 50px;
+  background: var(--brand-brand_orange, #eb5230);
+
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+.homeButton:hover {
+  opacity: 0.9;
+}
