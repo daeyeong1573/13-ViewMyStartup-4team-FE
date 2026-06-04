@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import CompanyListPage from "./pages/CompanyListPage";
+import MyStartupCompanyListPage from "./pages/my-startup-companylistpage/MyStartupCompanyListPage";
+
 import NotFoundPage from "./pages/not-found-page/NotFoundPage";
 import Layout from "./layouts/Layout";
 import InvestmentStatusPage from "./pages/investment-status/InvestmentStatusPage";
@@ -13,7 +14,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<CompanyListPage />} />
+          <Route index element={<MyStartupCompanyListPage />} />
           <Route path="mycompare" element={<MyStartupCompareSelectPage />} />
           <Route path="mycompare/result" element={<CompareResultPage />} />
           <Route path="comparestat" element={<CompareStatusPage />} />
