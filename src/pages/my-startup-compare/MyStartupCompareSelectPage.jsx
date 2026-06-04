@@ -53,6 +53,7 @@ export default function MyStartupCompareSelectPage() {
     page: currentPage,
     limit,
     orderBy,
+    myStartupId: myCompany?.id,
   });
 
   const isCompareActive = myCompany && compareCompanyList.length >= 1;
