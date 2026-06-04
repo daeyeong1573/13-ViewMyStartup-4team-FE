@@ -16,6 +16,10 @@ export function useGetStartupList(options = {}) {
       ...options,
     });
 
+    if (!options.myStartupId) {
+      params.delete("myStartupId");
+    }
+
     async function getApi() {
       try {
         const result = await company.getCompanyList(params);
@@ -26,7 +30,13 @@ export function useGetStartupList(options = {}) {
       }
     }
     getApi();
-  }, [options.orderBy, options.limit, options.search, options.page]);
+  }, [
+    options.orderBy,
+    options.limit,
+    options.search,
+    options.page,
+    options.myStartupId,
+  ]);
 
   return { companyList, pagination };
 }
