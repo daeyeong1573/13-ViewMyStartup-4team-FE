@@ -27,7 +27,7 @@ export default function MyStartupCompanyListPage() {
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const { currentPage, limit, orderBy, keyword } = filter;
 
-  const { companyList = [], pagination = {} } = useGetStartupList({
+  const { companyList, pagination } = useGetStartupList({
     page: currentPage,
     limit,
     orderBy,
