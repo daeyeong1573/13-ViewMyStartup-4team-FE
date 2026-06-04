@@ -67,6 +67,10 @@
   border-bottom: none;
 }
 
+.myCompanyRow {
+  background-color: var(--black-black_100);
+}
+
 .companyNameCell {
   display: flex;
   align-items: center;
