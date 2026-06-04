@@ -1,52 +1,26 @@
 import styles from "./InvestmentStatusPage.module.css";
+import { useState } from "react";
+
+import { useGetInvestmentList } from "@/hooks/useGetInvestmentList";
 import Dropdown from "@/components/common/Dropdown";
 import Pagination from "@/components/common/Pagination";
 import { formatCurrencyToKorea } from "@/utils/format";
 
-function InvestmentStatusPage() {
-  const currentPage = 1;
-  const limit = 10;
-  const pagination = { totalPages: 5 };
+const INITIAL_FILTER = {
+  currentPage: 1,
+  limit: 10,
+  orderBy: "virtualInvestment_desc",
+};
 
-  const companyList = [
-    {
-      id: 1,
-      name: "테스트 스타트업 A",
-      description:
-        "이것은 UI 퍼블리싱을 테스트하기 위한 기업 소개글입니다. 2줄 이상 길어졌을 때 말줄임표 처리가 예쁘게 잘 되는지 확인합니다.",
-      category: "IT/플랫폼",
-      virtualInvestment: 1000000000,
-      totalInvestment: 5000000000,
-      imgUrl: "https://via.placeholder.com/40",
-    },
-    {
-      id: 2,
-      name: "테스트 스타트업 B",
-      description: "테스트 기업입니다.",
-      category: "에듀테크",
-      virtualInvestmentTotal: 500000000,
-      totalInvestment: 2500000000,
-      imgUrl: "https://via.placeholder.com/40",
-    },
-    {
-      id: 3,
-      name: "테스트 스타트업 c",
-      description: "테스트 기업입니다.",
-      category: "에듀테크",
-      virtualInvestmentTotal: 400000000,
-      totalInvestment: 1500000000,
-      imgUrl: "https://via.placeholder.com/40",
-    },
-    {
-      id: 4,
-      name: "테스트 스타트업 D",
-      description: "테스트 기업입니다.",
-      category: "에듀테크",
-      virtualInvestmentTotal: 300000000,
-      totalInvestment: 1000000000,
-      imgUrl: "https://via.placeholder.com/40",
-    },
-  ];
+export default function InvestmentStatusPage() {
+  const [filter, setFilter] = useState(INITIAL_FILTER);
+  const { currentPage, limit, orderBy } = filter;
+
+  const { companyList = [], pagination = {} } = useGetInvestmentList({
+    page: currentPage,
+    limit,
+    orderBy,
+  });
 
   const sortOptions = [
     {
@@ -61,13 +35,24 @@ function InvestmentStatusPage() {
     { label: "실제 누적 투자 금액 낮은순", value: "totalInvestment_asc" },
   ];
 
+  const handleSortSelect = (option) => {
+    console.log("드롭다운에서 선택된 값:", option);
+
+    const selectedValue = typeof option === "string" ? option : option.value;
+    setFilter((prev) => ({ ...prev, orderBy: selectedValue, currentPage: 1 }));
+  };
+
+  const handlePageChange = (page) => {
+    setFilter((prev) => ({ ...prev, currentPage: page }));
+  };
+
   return (
     <main className={styles.mainContainer}>
       <div className={styles.inner}>
         <div className={styles.header}>
           <h1 className={styles.title}>투자 현황</h1>
           <div className={styles.filterWrapper}>
-            <Dropdown options={sortOptions} onSelect={() => {}} />
+            <Dropdown options={sortOptions} onSelect={handleSortSelect} />
           </div>
         </div>
 
@@ -83,47 +68,59 @@ function InvestmentStatusPage() {
         </div>
 
         <div className={styles.tableBodyWrapper}>
-          {companyList.map((company, index) => {
-            const rank = index + 1;
-            return (
-              <div key={company.id} className={styles.tableRow}>
-                <div className={styles.rank}>{rank}위</div>
-                <div className={styles.companyInfo}>
-                  <img
-                    src={company.imgUrl}
-                    alt={`${company.name} 로고`}
-                    className={styles.logo}
-                  />
-                  <span className={styles.companyName}>{company.name}</span>
+          {companyList.length > 0 ? (
+            companyList.map((company, index) => {
+              const rank = (currentPage - 1) * limit + index + 1;
+              return (
+                <div key={company.id} className={styles.tableRow}>
+                  <div className={styles.rank}>{rank}위</div>
+                  <div className={styles.companyInfo}>
+                    <img
+                      src={company.imgUrl}
+                      alt={`${company.name} 로고`}
+                      className={styles.logo}
+                    />
+                    <span className={styles.companyName}>{company.name}</span>
+                  </div>
+                  <div
+                    className={styles.description}
+                    title={company.description}
+                  >
+                    {company.description}
+                  </div>
+                  <div className={styles.category}>{company.category}</div>
+
+                  <div className={styles.investAmount}>
+                    {formatCurrencyToKorea(
+                      company.virtualInvestmentTotal ||
+                        company.virtualInvestment ||
+                        0,
+                    )}
+                    원
+                  </div>
+                  <div className={styles.actualAmount}>
+                    {formatCurrencyToKorea(company.totalInvestment || 0)}원
+                  </div>
                 </div>
-                <div className={styles.description} title={company.description}>
-                  {company.description}
-                </div>
-                <div className={styles.category}>{company.category}</div>
-                <div className={styles.investAmount}>
-                  {formatCurrencyToKorea(
-                    company.virtualInvestmentTotal || company.virtualInvestment,
-                  )}
-                  원
-                </div>
-                <div className={styles.actualAmount}>
-                  {formatCurrencyToKorea(company.totalInvestment)}원
-                </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div className={styles.emptyState}>
+              투자 현황 데이터가 없습니다.
+            </div>
+          )}
         </div>
 
-        <div className={styles.paginationWrapper}>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={pagination.totalPages}
-            onPageChange={() => {}}
-          />
-        </div>
+        {pagination.totalPages > 1 && (
+          <div className={styles.paginationWrapper}>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </div>
     </main>
   );
 }
-
-export default InvestmentStatusPage;

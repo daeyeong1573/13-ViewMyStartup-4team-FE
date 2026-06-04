@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import CompanyListPage from "./pages/CompanyListPage";
-import NotFoundPage from "./pages/NotFoundPage";
+import NotFoundPage from "./pages/not-found-page/NotFoundPage";
 import Layout from "./layouts/Layout";
 import InvestmentStatusPage from "./pages/investment-status/InvestmentStatusPage";
 import CompareStatusPage from "./pages/compare-status/CompareStatusPage";
