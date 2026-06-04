@@ -16,7 +16,11 @@ export default function InvestmentStatusPage() {
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const { currentPage, limit, orderBy } = filter;
 
-  const { companyList = [], pagination = {} } = useGetInvestmentList({
+  const {
+    companyList = [],
+    pagination = {},
+    isLoading,
+  } = useGetInvestmentList({
     page: currentPage,
     limit,
     orderBy,
@@ -68,7 +72,12 @@ export default function InvestmentStatusPage() {
         </div>
 
         <div className={styles.tableBodyWrapper}>
-          {companyList.length > 0 ? (
+          {/*삼항 연산자를 중첩하거나 분리하여 로딩 중일 때의 UI를 먼저 출력 */}
+          {isLoading ? (
+            <div className={styles.loadingState}>
+              데이터를 불러오는 중입니다...
+            </div>
+          ) : companyList.length > 0 ? (
             companyList.map((company, index) => {
               const rank = (currentPage - 1) * limit + index + 1;
               return (
