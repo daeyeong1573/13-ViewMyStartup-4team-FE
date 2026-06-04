@@ -8,32 +8,15 @@ import Button from "@/components/ui/Button";
 import defaultLogo from "@/assets/images/img_gnb_logo.png";
 import { formatCurrencyToKorea } from "@/utils/format";
 import useGetCompareResult from "@/hooks/useGetCompareResult";
-import useGetCompareRank from "@/hooks/useGetcompareRank";
-
-const COMPARE_SORT_OPTIONS = [
-  { label: "누적 투자금액 높은순", value: "totalInvestment_desc" },
-  { label: "누적 투자금액 낮은순", value: "totalInvestment_asc" },
-  { label: "매출액 높은순", value: "revenue_desc" },
-  { label: "매출액 낮은순", value: "revenue_asc" },
-  { label: "고용 인원 많은순", value: "employeeCount_desc" },
-  { label: "고용 인원 적은순", value: "employeeCount_asc" },
-];
-
-const RANK_SORT_OPTIONS = [
-  { label: "매출액 높은순", value: "revenue_desc" },
-  { label: "매출액 낮은순", value: "revenue_asc" },
-  { label: "누적 투자금액 높은순", value: "totalInvestment_desc" },
-  { label: "누적 투자금액 낮은순", value: "totalInvestment_asc" },
-  { label: "고용 인원 많은순", value: "employees_desc" },
-  { label: "고용 인원 적은순", value: "employees_asc" },
-];
+import useGetCompareRank from "@/hooks/useGetCompareRank";
+import { STARTUP_SORT_OPTIONS } from "@/constants/startupSort";
 
 export default function CompareResultPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  const [compareSort, setCompareSort] = useState(COMPARE_SORT_OPTIONS[0].value);
-  const [rankSort, setRankSort] = useState(RANK_SORT_OPTIONS[0].value);
+  const [compareSort, setCompareSort] = useState(STARTUP_SORT_OPTIONS[0].value);
+  const [rankSort, setRankSort] = useState(STARTUP_SORT_OPTIONS[0].value);
 
   useEffect(() => {
     if (!state) {
@@ -89,7 +72,7 @@ export default function CompareResultPage() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>비교 결과 확인하기</h2>
           <Dropdown
-            options={COMPARE_SORT_OPTIONS}
+            options={STARTUP_SORT_OPTIONS}
             onSelect={(opt) => setCompareSort(opt.value)}
           />
         </div>
@@ -141,7 +124,7 @@ export default function CompareResultPage() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>기업 순위 확인하기</h2>
           <Dropdown
-            options={RANK_SORT_OPTIONS}
+            options={STARTUP_SORT_OPTIONS}
             onSelect={(opt) => setRankSort(opt.value)}
           />
         </div>
