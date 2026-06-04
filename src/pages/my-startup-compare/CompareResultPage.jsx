@@ -193,6 +193,7 @@ export default function CompareResultPage() {
         company={myStartup}
         mode="create"
         onSubmit={(formData) => {
+          console.log(formData);
           setIsModalOpen(false);
         }}
       />

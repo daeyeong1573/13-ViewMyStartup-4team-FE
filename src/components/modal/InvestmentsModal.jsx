@@ -170,7 +170,7 @@ function InvestmentsModal({
           <Button variant="solidOutline" onClick={onClose}>
             취소
           </Button>
-          <Button variant="solid" status="active">
+          <Button variant="solid" status="active" type="submit">
             {submitLabel}
           </Button>
         </div>

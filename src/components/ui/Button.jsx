@@ -3,11 +3,17 @@ import RestartIcon from "@/assets/icons/ic_restart.png";
 import WhiteRestartIcon from "@/assets/icons/ic_restart_white.svg";
 import CheckIcon from "@/assets/icons/ic_check.png";
 
-function Button({ children, onClick, variant = "solid", status = "active" }) {
+function Button({
+  children,
+  onClick,
+  variant = "solid",
+  status = "active",
+  type = "button",
+}) {
   const buttonClass = [styles.base, styles[variant], styles[status]].join(" ");
 
   return (
-    <button type="button" className={buttonClass} onClick={onClick}>
+    <button type={type} className={buttonClass} onClick={onClick}>
       {variant === "reset" && (
         <img
           src={status === "inactive" ? RestartIcon : WhiteRestartIcon}
