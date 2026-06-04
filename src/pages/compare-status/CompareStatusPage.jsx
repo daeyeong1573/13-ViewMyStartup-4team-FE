@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./CompareStatusPage.module.css";
 import Dropdown from "../../components/common/Dropdown";
 import Pagination from "../../components/common/Pagination";
-import { BASE_URL, COMPARE_ENDPOINT, STATUS_ENDPOINT } from "@/constants/api";
+import { useGetCompareStatus } from "@/hooks/useGetCompareStatus";
 
 const COMPARE_STATUS_OPTIONS = [
   { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
@@ -12,37 +12,8 @@ const COMPARE_STATUS_OPTIONS = [
 ];
 
 export default function CompareStatusPage() {
-  const [currentSort, setCurrentSort] = useState(COMPARE_STATUS_OPTIONS[0]);
-  const [startups, setStartups] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
-  useEffect(() => {
-    const fetchCompareData = async () => {
-      try {
-        const sortValue = currentSort?.value || "myStartupCount_desc";
-        const response = await fetch(
-          `${BASE_URL}${COMPARE_ENDPOINT}${STATUS_ENDPOINT}?orderBy=${sortValue}&page=${page}&limit=10`,
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP Error ${response.status}`);
-        }
-
-        const resBody = await response.json();
-
-        setStartups(resBody.data ?? []);
-
-        if (resBody.pagination) {
-          setTotalPages(resBody.pagination.totalPages || 1);
-        }
-      } catch (error) {
-        console.error("연동 에러:", error.message);
-      }
-    };
-    fetchCompareData();
-  }, [currentSort, page]);
-
+  const { startups, currentSort, setCurrentSort, page, setPage, totalPages } =
+    useGetCompareStatus(COMPARE_STATUS_OPTIONS[0]);
   return (
     <div className={styles.pageContainer}>
       <main className={styles.mainContent}>
