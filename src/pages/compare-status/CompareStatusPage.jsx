@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CompareStatusPage.module.css";
-import Dropdown from "../components/common/Dropdown";
-import Pagination from "../components/common/Pagination";
+import Dropdown from "../../components/common/Dropdown";
+import Pagination from "../../components/common/Pagination";
+import { BASE_URL, COMPARE_ENDPOINT, STATUS_ENDPOINT } from "@/constants/api";
+
+const COMPARE_STATUS_OPTIONS = [
+  { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
+  { label: "나의 기업 선택 횟수 낮은순", value: "myStartupCount_asc" },
+  { label: "비교 기업 선택 횟수 높은순", value: "compareStartupCount_desc" },
+  { label: "비교 기업 선택 횟수 낮은순", value: "compareStartupCount_asc" },
+];
 
 export default function CompareStatusPage() {
-  const comparePageOptions = [
-    { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
-    { label: "나의 기업 선택 횟수 낮은순", value: "myStartupCount_asc" },
-    { label: "비교 기업 선택 횟수 높은순", value: "compareStartupCount_desc" },
-    { label: "비교 기업 선택 횟수 낮은순", value: "compareStartupCount_asc" },
-  ];
-
-  const [currentSort, setCurrentSort] = useState(comparePageOptions);
+  const [currentSort, setCurrentSort] = useState(COMPARE_STATUS_OPTIONS[0]);
   const [startups, setStartups] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -19,21 +20,24 @@ export default function CompareStatusPage() {
   useEffect(() => {
     const fetchCompareData = async () => {
       try {
-        const sortValue =
-          currentSort && typeof currentSort === "object"
-            ? currentSort.value
-            : currentSort;
+        const sortValue = currentSort?.value || "myStartupCount_desc";
         const response = await fetch(
-          //임시로 로컬호스트 주소 사용
-          `http://localhost:3000/compare/status?orderBy=${sortValue}&page=${page}&limit=10`,
+          `${BASE_URL}${COMPARE_ENDPOINT}${STATUS_ENDPOINT}?orderBy=${sortValue}&page=${page}&limit=10`,
         );
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status}`);
+        }
+
         const resBody = await response.json();
-        setStartups(resBody.data || []);
+
+        setStartups(resBody.data ?? []);
+
         if (resBody.pagination) {
           setTotalPages(resBody.pagination.totalPages || 1);
         }
       } catch (error) {
-        console.error("연동 에러:", error);
+        console.error("연동 에러:", error.message);
       }
     };
     fetchCompareData();
@@ -46,7 +50,7 @@ export default function CompareStatusPage() {
           <h2 className={styles.pageTitle}>비교 현황</h2>
           <div className={styles.dropdownWrapper}>
             <Dropdown
-              options={comparePageOptions}
+              options={COMPARE_STATUS_OPTIONS}
               selected={currentSort}
               onSelect={(chosenOption) => {
                 setCurrentSort(chosenOption);
