@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./CompareResultPage.module.css";
 import CardArea from "@/components/common/startup-compare/CardArea";
@@ -17,19 +17,6 @@ export default function CompareResultPage() {
 
   const [compareSort, setCompareSort] = useState(STARTUP_SORT_OPTIONS[0].value);
   const [rankSort, setRankSort] = useState(STARTUP_SORT_OPTIONS[0].value);
-
-  useEffect(() => {
-    if (!state) {
-      navigate("/mycompare", { replace: true });
-      return;
-    }
-    return () => {
-      window.history.replaceState(null, "", "/mycompare");
-    };
-  }, [state, navigate]);
-
-  if (!state) return null;
-
   const { myStartupId, compareStartupIds } = state;
 
   const { myStartup, compareResultList } = useGetCompareResult({
@@ -42,6 +29,17 @@ export default function CompareResultPage() {
     myStartupId,
     orderBy: rankSort,
   });
+
+  useEffect(() => {
+    if (!state) {
+      navigate("/mycompare", { replace: true });
+      return;
+    }
+    return () => {
+      window.history.replaceState(null, "", "/mycompare");
+    };
+  }, [state, navigate]);
+  if (!state) return null;
 
   return (
     <main className={styles.mainContainer}>
