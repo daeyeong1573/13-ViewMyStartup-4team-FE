@@ -1,11 +1,7 @@
-/* StartupList.module.css */
-
 :global(body) {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  width: 100%;
-  height: 100%;
   background-color: var(--black-black_400);
 }
 
@@ -15,10 +11,10 @@
   box-sizing: border-box;
 }
 
-.startupContainer {
-  background-color: var(--black-black_400);
-  color: var(--white-white);
+.pageWrapper {
+  background: var(--black-black_400);
   min-height: 100vh;
+  width: 100%;
   font-family:
     var(--font-pretendard),
     -apple-system,
@@ -28,309 +24,237 @@
     "Helvetica Neue",
     Arial,
     sans-serif;
+}
+
+.contentArea {
+  max-width: 1200px;
   width: 100%;
-  height: 100%;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  padding: 1rem 2.5rem;
-  background-color: var(--black-black_300);
-  border-bottom: 1px solid var(--black-black_200);
-  width: 100%;
-}
-
-.headerLogo {
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-right: 3.75rem;
-}
-
-.headerNav {
-  display: flex;
-  gap: 1.875rem;
-  justify-content: flex-start;
-}
-
-.navItem {
-  color: var(--gray-gray_100);
-  text-decoration: none;
-  font-size: 0.9375rem;
-  transition: color 0.2s;
-}
-
-.navItem:hover {
-  color: var(--white-white);
-}
-
-.mainContent {
-  width: 75rem;
-  max-width: 100%;
-  margin: 0 0 0 22.5rem;
-  padding: 2.5rem 0;
-}
-
-.listHeader {
+.topSection {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   margin-bottom: 1.5rem;
+  padding: 0;
   flex-wrap: wrap;
   gap: 1rem;
-  width: 100%;
 }
 
-.listTitle {
-  font-size: 1.25rem;
+.pageTitle {
+  font-size: 1.5rem;
   font-weight: 700;
-  margin: 0;
   color: var(--white-white);
+  margin: 0;
 }
 
-.listControls {
+.actionControls {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 10;
 }
 
-.searchBox {
+.dropdownContainer {
+  min-width: 13.5rem;
   display: flex;
-  align-items: center;
-  background-color: var(--black-black_300);
-  border: 1px solid var(--gray-gray_400);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  width: 20rem;
-  transition: border-color 0.2s;
+  justify-content: flex-end;
+  font-weight: 400;
+  position: relative;
+  z-index: 10;
 }
 
-.searchBox:focus-within {
-  border-color: var(--gray-gray_300);
-}
-
-.searchBox svg {
-  color: var(--gray-gray_200);
-  margin-right: 0.5rem;
-  flex-shrink: 0;
-}
-
-.searchBox input {
-  background: none;
-  border: none;
-  color: var(--white-white);
+.tableScrollArea {
   width: 100%;
-  font-size: 0.875rem;
-  outline: none;
-}
-
-.searchBox input::placeholder {
-  color: var(--gray-gray_300);
-}
-
-.searchInput {
-  width: 20rem;
-  background-color: var(--black-black_300);
-  color: var(--white-white);
-  border: 1px solid var(--gray-gray_400);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.searchInput:focus {
-  border-color: var(--gray-gray_300);
-}
-
-.sortDropdown:hover,
-.sortDropdown:focus {
-  border-color: var(--gray-gray_300);
-}
-
-.tableContainer {
-  background-color: var(--black-black_300);
-  border-radius: 0.5rem;
   overflow-x: auto;
-  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .startupTable {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
-  text-align: left;
-  font-size: 0.875rem;
-}
-
-.startupTable th {
-  background-color: var(--black-black_200);
-  color: var(--white-white);
-  font-weight: 500;
-  padding: 1rem;
-  border-bottom: 1px solid var(--gray-gray_400);
-}
-
-.startupTable td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--black-black_200);
-  vertical-align: middle;
-}
-
-.center {
   text-align: center;
 }
 
-.companyName {
+.colRank {
+  width: 7%;
+}
+.colCompany {
+  width: 14%;
+}
+.colDesc {
+  width: 26%;
+}
+.colCategory {
+  width: 10%;
+}
+.colInvest {
+  width: 16%;
+}
+.colRevenue {
+  width: 16%;
+}
+.colEmp {
+  width: 10%;
+}
+
+.theadStyle {
+  background-color: var(--black-black_100);
+}
+
+.theadStyle th {
+  padding: 1.25rem 1.5rem;
+  color: var(--white-white);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: none;
+}
+
+.theadStyle th:first-child {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.theadStyle th:last-child {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.spacerRow {
+  height: 0.625rem;
+}
+
+.tbodyStyle {
+  background-color: var(--black-black_200);
+}
+
+.tbodyRow {
+  border-bottom: 1px solid var(--gray-gray_300);
+  transition: background-color 0.2s ease;
+}
+
+.tbodyRow:hover {
+  background-color: var(--black-black_300);
+}
+
+.tbodyRow td {
+  padding: 1.25rem 1.5rem;
+  font-size: 0.875rem;
+  vertical-align: middle;
+}
+
+.tbodyRow:first-child td:first-child {
+  border-top-left-radius: 0.5rem;
+}
+
+.tbodyRow:first-child td:last-child {
+  border-top-right-radius: 0.5rem;
+}
+
+.tbodyRow:last-child {
+  border-bottom: none;
+}
+
+.tbodyRow:last-child td:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
+
+.tbodyRow:last-child td:last-child {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.tbodyStyle tr:has(.emptyContent) td {
+  border-radius: 0.5rem;
+}
+
+.cellRankText {
+  font-weight: 500;
+  color: var(--gray-gray_100);
+}
+
+.cellCompanyWrap {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-weight: 500;
+  justify-content: flex-start;
+  text-align: left;
 }
 
-.companyLogoPlaceholder {
-  width: 1.75rem;
-  height: 1.75rem;
+.brandLogo {
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
-  background-color: var(--white-white);
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--black-black_300);
+  border: 1px solid var(--gray-gray_300);
+}
+
+.brandLogoPlaceholder {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
   background-image: linear-gradient(135deg, #a644ff 0%, #ff449f 100%);
   flex-shrink: 0;
 }
 
-.description {
-  color: var(--gray-gray_100);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 31.25rem;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 2.5rem;
-}
-
-.pageBtn {
-  background-color: var(--black-black_200);
-  color: var(--gray-gray_200);
-  border: none;
-  border-radius: 0.25rem;
-  width: 2.25rem;
-  height: 2.25rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-}
-
-.pageBtn:hover:not(:disabled) {
-  background-color: var(--gray-gray_400);
+.brandName {
+  font-weight: 500;
   color: var(--white-white);
 }
 
-.active {
-  background-color: var(--brand-brand_orange) !important;
-  color: var(--white-white) !important;
-  font-weight: bold;
+.cellDescText {
+  color: var(--gray-gray_100);
+  text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  line-height: 1.4;
+  word-break: keep-all;
 }
 
-.pageBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.cellStandardText {
+  color: var(--gray-gray_100);
+}
+
+.cellAmountText {
+  color: var(--gray-gray_100);
+  font-weight: 500;
+}
+
+.emptyContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12rem;
+  color: var(--gray-gray_100);
+}
+
+.pageNavContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
 @media screen and (max-width: 48rem) {
-  /* 768px */
-  .listHeader {
+  .topSection {
     flex-direction: column;
     align-items: flex-start;
   }
-  .listControls {
+  .actionControls {
     width: 100%;
     justify-content: space-between;
   }
-  .searchBox,
-  .searchInput {
-    flex: 1;
-    width: auto;
-  }
-}
-
-.dropdownContainer {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdownToggle {
-  background-color: var(--black-black_300);
-  color: var(--white-white);
-  border: 1px solid var(--gray-gray_400);
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem 0.5rem 1rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-width: 13.75rem;
-  height: 3rem;
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
-
-.dropdownToggle:hover {
-  border-color: var(--gray-gray_300);
-}
-
-.dropdownIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dropdownMenu {
-  position: absolute;
-  top: calc(100% + 0.25rem);
-  right: 0;
-  background-color: var(--black-black_300);
-  border: 1px solid var(--gray-gray_400);
-  border-radius: 0.375rem;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  z-index: 10;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.4);
-}
-
-.dropdownItem {
-  padding: 0.875rem 1rem;
-  font-size: 0.875rem;
-  color: var(--gray-gray_100);
-  cursor: pointer;
-  border-bottom: 1px solid var(--gray-gray_400);
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-  text-align: center;
-}
-
-.dropdownItem:last-child {
-  border-bottom: none;
-}
-
-.dropdownItem:hover {
-  background-color: var(--black-black_200);
-  color: var(--white-white);
 }

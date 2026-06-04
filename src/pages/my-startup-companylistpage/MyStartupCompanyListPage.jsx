@@ -1,236 +1,209 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo } from "react";
 import styles from "./MyStartupCompanyListPage.module.css";
 
 import SearchBar from "@/components/ui/SearchBar";
-import StartupTable from "./MyStartupCompanyListPageTable";
+import Dropdown from "@/components/common/Dropdown";
 import Pagination from "@/components/common/Pagination";
+import { formatCurrencyToKorea } from "@/utils/format";
+import { useGetStartupList } from "@/hooks/useGetStartupList";
 
-import codeitLogo from "@/assets/CompanyLogo/codeit.png";
-import mathpressoLogo from "@/assets/CompanyLogo/mathpresso.png";
-import riiidLogo from "@/assets/CompanyLogo/riiid.png";
-import eliceLogo from "@/assets/CompanyLogo/elice.png";
-import mildangLogo from "@/assets/CompanyLogo/mildang.png";
-
-const COMPANY_NAME_TEMPLATES = [
-  "코드잇",
-  "매스프레소",
-  "뤼이드",
-  "엘리스",
-  "아이헤이트플라잉버그스",
-];
-
-const LOGO_MAP = {
-  코드잇: codeitLogo,
-  매스프레소: mathpressoLogo,
-  뤼이드: riiidLogo,
-  엘리스: eliceLogo,
-  아이헤이트플라잉버그스: mildangLogo,
+const INITIAL_FILTER = {
+  currentPage: 1,
+  limit: 10,
+  orderBy: "totalInvestment_desc",
+  keyword: "",
 };
 
-const CATEGORY_TEMPLATES = ["에듀테크"];
-const INVESTMENT_TEMPLATES = ["140억 원", "150억 원", "10억 원"];
-const REVENUE_TEMPLATES = [
-  "50억 원",
-  "42억 원",
-  "30억 원",
-  "28억 원",
-  "5억 원",
-];
-const EMPLOYEE_TEMPLATES = ["68명", "40명", "102명", "13명", "97명"];
-
-const generateMockData = () => {
-  return Array.from({ length: 100 }, (_, index) => {
-    const name = COMPANY_NAME_TEMPLATES[index % COMPANY_NAME_TEMPLATES.length];
-    return {
-      id: index + 1, // 고유 식별자 (원래 순서 기억용)
-      rank: index + 1,
-      name: name,
-      logo: LOGO_MAP[name],
-      description:
-        "코드잇은 '온라인 코딩 교육 서비스'를 운영하는 EdTech 스타트업입니다...",
-      category: CATEGORY_TEMPLATES[0],
-      cumulativeInvestment:
-        INVESTMENT_TEMPLATES[index % INVESTMENT_TEMPLATES.length],
-      annualRevenue: REVENUE_TEMPLATES[index % REVENUE_TEMPLATES.length],
-      employeeCount: EMPLOYEE_TEMPLATES[index % EMPLOYEE_TEMPLATES.length],
-    };
-  });
-};
-
-const STARTUP_DATA = generateMockData();
 const SORT_OPTIONS = [
-  { label: "누적 투자금액 높은순", value: "invest_desc" },
-  { label: "누적 투자금액 낮은순", value: "invest_asc" },
+  { label: "누적 투자금액 높은순", value: "totalInvestment_desc" },
+  { label: "누적 투자금액 낮은순", value: "totalInvestment_asc" },
   { label: "매출액 높은순", value: "revenue_desc" },
   { label: "매출액 낮은순", value: "revenue_asc" },
-  { label: "고용 인원 많은순", value: "emp_desc" },
-  { label: "고용 인원 적은순", value: "emp_asc" },
+  { label: "고용 인원 많은순", value: "employeeCount_desc" },
+  { label: "고용 인원 적은순", value: "employeeCount_asc" },
 ];
 
-const CustomDropdown = ({ value, onChange }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+export default function MyStartupCompanyListPage() {
+  const [filter, setFilter] = useState(INITIAL_FILTER);
+  const { currentPage, limit, orderBy, keyword } = filter;
 
-  const selectedOption =
-    SORT_OPTIONS.find((opt) => opt.value === value) || SORT_OPTIONS[0];
+  const { companyList = [], pagination = {} } = useGetStartupList({
+    page: currentPage,
+    limit,
+    orderBy,
+    search: keyword,
+  });
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const sortedCompanyList = useMemo(() => {
+    if (!companyList || companyList.length === 0) return [];
 
-  return (
-    <div className={styles.dropdownContainer} ref={dropdownRef}>
-      <button
-        className={styles.dropdownToggle}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span>{selectedOption.label}</span>
-        <span className={styles.dropdownIcon}>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="2"
-              y="2"
-              width="20"
-              height="20"
-              rx="4"
-              stroke="#888888"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M7 10L12 15L17 10"
-              stroke="#888888"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      </button>
-      {isOpen && (
-        <ul className={styles.dropdownMenu}>
-          {SORT_OPTIONS.map((option) => (
-            <li
-              key={option.value}
-              className={styles.dropdownItem}
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
+    const sorted = [...companyList];
+    sorted.sort((a, b) => {
+      const valA = (key) => Number(a[key] || 0);
+      const valB = (key) => Number(b[key] || 0);
 
-const MyStartupCompanyListPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortOption, setSortOption] = useState("rank");
-  const itemsPerPage = 10;
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const sortedStartups = useMemo(() => {
-    const filtered = STARTUP_DATA.filter((startup) =>
-      startup.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-
-    const sorted = filtered.sort((a, b) => {
-      const getNum = (str) => parseInt(str.replace(/[^0-9]/g, "")) || 0;
-
-      switch (sortOption) {
-        case "rank":
-          return a.id - b.id;
-        case "invest_desc":
-          return (
-            getNum(b.cumulativeInvestment) - getNum(a.cumulativeInvestment)
-          );
-        case "invest_asc":
-          return (
-            getNum(a.cumulativeInvestment) - getNum(b.cumulativeInvestment)
-          );
+      switch (orderBy) {
+        case "totalInvestment_desc":
+          return valB("totalInvestment") - valA("totalInvestment");
+        case "totalInvestment_asc":
+          return valA("totalInvestment") - valB("totalInvestment");
         case "revenue_desc":
-          return getNum(b.annualRevenue) - getNum(a.annualRevenue);
+          return valB("revenue") - valA("revenue");
         case "revenue_asc":
-          return getNum(a.annualRevenue) - getNum(b.annualRevenue);
-        case "emp_desc":
-          return getNum(b.employeeCount) - getNum(a.employeeCount);
-        case "emp_asc":
-          return getNum(a.employeeCount) - getNum(b.employeeCount);
+          return valA("revenue") - valB("revenue");
+        case "employeeCount_desc":
+          return valB("employeeCount") - valA("employeeCount");
+        case "employeeCount_asc":
+          return valA("employeeCount") - valB("employeeCount");
         default:
-          return a.id - b.id;
+          return 0;
       }
     });
 
-    return sorted.map((startup, index) => ({
-      ...startup,
-      rank: index + 1,
-    }));
-  }, [searchTerm, sortOption]);
+    return sorted;
+  }, [companyList, orderBy]);
 
-  const totalPages = Math.ceil(sortedStartups.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedStartups = sortedStartups.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
+  const handleSearch = (e) => {
+    setFilter((prev) => ({ ...prev, keyword: e.target.value, currentPage: 1 }));
+  };
+
+  const handleClearSearch = () => {
+    setFilter((prev) => ({ ...prev, keyword: "", currentPage: 1 }));
+  };
+
+  const handleSortSelect = (option) => {
+    const selectedValue = option?.value || option;
+    setFilter((prev) => ({ ...prev, orderBy: selectedValue, currentPage: 1 }));
+  };
+
+  const handlePageChange = (page) => {
+    setFilter((prev) => ({ ...prev, currentPage: page }));
+  };
 
   return (
-    <div className={styles.startupContainer}>
-      <main className={styles.mainContent}>
-        <div className={styles.listHeader}>
-          <h1 className={styles.listTitle}>전체 스타트업 목록</h1>
+    <main className={styles.pageWrapper}>
+      <div className={styles.contentArea}>
+        <div className={styles.topSection}>
+          <h1 className={styles.pageTitle}>전체 스타트업 목록</h1>
 
-          <div className={styles.listControls}>
-            <div className={styles.searchWrapper}>
-              <SearchBar
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1);
-                }}
-                onClear={() => {
-                  setSearchTerm("");
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-
-            <CustomDropdown
-              value={sortOption}
-              onChange={(value) => {
-                setSortOption(value);
-                setCurrentPage(1);
-              }}
+          <div className={styles.actionControls}>
+            <SearchBar
+              value={keyword}
+              onChange={handleSearch}
+              onClear={handleClearSearch}
             />
+            <div className={styles.dropdownContainer}>
+              <Dropdown options={SORT_OPTIONS} onSelect={handleSortSelect} />
+            </div>
           </div>
         </div>
 
-        <StartupTable data={paginatedStartups} />
+        <div className={styles.tableScrollArea}>
+          <table className={styles.startupTable}>
+            <thead className={styles.theadStyle}>
+              <tr>
+                <th className={styles.colRank}>순위</th>
+                <th className={styles.colCompany}>기업명</th>
+                <th className={styles.colDesc}>기업 소개</th>
+                <th className={styles.colCategory}>카테고리</th>
+                <th className={styles.colInvest}>누적 투자 금액</th>
+                <th className={styles.colRevenue}>매출액</th>
+                <th className={styles.colEmp}>고용 인원</th>
+              </tr>
+            </thead>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </main>
-    </div>
+            <tbody>
+              <tr className={styles.spacerRow}>
+                <td colSpan="10"></td>
+              </tr>
+            </tbody>
+
+            <tbody className={styles.tbodyStyle}>
+              {sortedCompanyList.length > 0 ? (
+                sortedCompanyList.map((company, index) => {
+                  const rank = (currentPage - 1) * limit + index + 1;
+                  return (
+                    <tr key={company.id} className={styles.tbodyRow}>
+                      <td className={styles.cellRankText}>{rank}위</td>
+
+                      <td>
+                        <div className={styles.cellCompanyWrap}>
+                          {company.logo || company.imgUrl ? (
+                            <img
+                              src={company.logo || company.imgUrl}
+                              alt={`${company.name} 로고`}
+                              className={styles.brandLogo}
+                            />
+                          ) : (
+                            <div className={styles.brandLogoPlaceholder}></div>
+                          )}
+                          <span className={styles.brandName}>
+                            {company.name}
+                          </span>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div
+                          className={styles.cellDescText}
+                          title={company.description}
+                        >
+                          {company.description || "-"}
+                        </div>
+                      </td>
+
+                      <td className={styles.cellStandardText}>
+                        {company.category || "-"}
+                      </td>
+
+                      <td className={styles.cellAmountText}>
+                        {company.totalInvestment || company.cumulativeInvestment
+                          ? `${formatCurrencyToKorea(
+                              company.totalInvestment ||
+                                company.cumulativeInvestment,
+                            )} 원`
+                          : "-"}
+                      </td>
+
+                      <td className={styles.cellAmountText}>
+                        {company.revenue || company.annualRevenue
+                          ? `${formatCurrencyToKorea(
+                              company.revenue || company.annualRevenue,
+                            )} 원`
+                          : "-"}
+                      </td>
+
+                      <td className={styles.cellStandardText}>
+                        {company.employeeCount
+                          ? `${company.employeeCount}명`
+                          : "-"}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="7">
+                    <div className={styles.emptyContent}>
+                      조건에 맞는 스타트업 데이터가 없습니다.
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {pagination.totalPages > 1 && (
+          <div className={styles.pageNavContainer}>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={pagination.totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
+      </div>
+    </main>
   );
-};
-
-export default MyStartupCompanyListPage;
+}
