@@ -11,14 +11,14 @@
   max-width: 75rem;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 5rem 2rem 4rem;
 }
 
 .contentHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .pageTitle {
@@ -37,19 +37,19 @@
 
 .tableHeaderContainer {
   width: 100%;
-  border-collapse: collapse; /* 바디 행들을 붙이기 위해 필수 */
+  border-collapse: collapse;
   display: table;
 }
 
 .tableHeaderContainer thead {
   display: block;
-  margin-bottom: 1rem; /* 💡 여기서 바디와 간격 발생 */
+  margin-bottom: 1rem;
 }
 
 .tableHeaderContainer tbody {
   display: block;
-  max-height: 40rem;
-  background-color: var(--black-black_200); /* 와이어프레임 배경색 */
+
+  background-color: var(--black-black_200);
   border-radius: 0.5rem;
   overflow: hidden;
   border: 1px solid #212121;
@@ -67,11 +67,12 @@
 .tableHeaderRow {
   background-color: var(--black-black_100);
   border-radius: 0.25rem;
-  padding: 1rem 0;
+  padding: 1.25rem 1.5rem;
 }
 
 .tableBodyRow {
-  height: 4rem;
+  padding: 0.1rem 0.1rem;
+  color: var(--gray-gray_100);
   border-bottom: 1px solid var(--gray-gray_300);
   transition: background-color 0.15s ease;
 }
@@ -151,8 +152,8 @@
 }
 
 .logoWrapper {
-  width: 2rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 2.25rem;
   background-color: var(--white-white);
   border-radius: 50%;
   display: flex;
@@ -185,6 +186,8 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 .introFlexWrapper {
@@ -193,4 +196,5 @@
 
 .paginationWrapper {
   display: flex;
+  justify-content: center;
 }
