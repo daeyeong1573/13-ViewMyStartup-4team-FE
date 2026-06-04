@@ -1,0 +1,229 @@
+.pageContainer {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #131313;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.mainContent {
+  max-width: 75rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.contentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.dropdownWrapper {
+  width: 16rem;
+}
+
+.tableWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.tableHeaderContainer {
+  width: 100%;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  background-color: #2e2e2e;
+  border: 0.03rem solid #2e2e2e;
+  margin-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+
+.colRank {
+  width: 6%;
+  text-align: center;
+  flex-shrink: 0;
+}
+.colCompany {
+  width: 16%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  padding-left: 4.5rem;
+  box-sizing: border-box;
+}
+
+.colCompanyBody {
+  width: 16%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  padding-left: 2rem;
+  box-sizing: border-box;
+}
+
+.colIntro {
+  width: 38%;
+  flex-grow: 1;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+.colCategory {
+  width: 14%;
+  text-align: center;
+  flex-shrink: 0;
+}
+.colCount {
+  width: 16%;
+  text-align: center;
+  padding-right: 0;
+  padding-right: 1.5rem;
+  flex-shrink: 0;
+}
+.colInvestment {
+  width: 16%;
+  text-align: center;
+  padding-right: 0;
+  padding-right: 1rem;
+  flex-shrink: 0;
+}
+
+.tableHeaderRow {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0;
+  font-size: 0.875rem;
+  color: #fff;
+  font-weight: 500;
+  background-color: #2e2e2e;
+}
+
+.tableBodyContainer {
+  width: 100%;
+  background-color: #161719;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  border: 0.0625rem solid #212121;
+  box-sizing: border-box;
+  background-color: #212121;
+}
+
+.tableBodyRow {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0;
+  border-bottom: 0.0625rem solid #2f3136;
+  font-size: 0.9375rem;
+  color: #e3e3e3;
+  transition: background-color 0.15s ease;
+}
+
+.tableBodyRow:last-child {
+  border-bottom: none;
+}
+
+.tableBodyRow:hover {
+  background-color: #1a1b1e;
+}
+
+.logoWrapper {
+  width: 2rem;
+  height: 2rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.companyLogo {
+  width: 2.03075rem;
+  height: 2.03075rem;
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+}
+
+.companyNameText {
+  color: #fff;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.introParagraph {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: #b9bbbe;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.introFlexWrapper {
+  width: 100%;
+  max-width: 85%;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+.categoryNameText {
+  color: #d8d8d8;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.countText {
+  color: #d8d8d8;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.investmentText {
+  color: #d8d8d8;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  width: 100%;
+}

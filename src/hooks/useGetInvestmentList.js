@@ -5,9 +5,13 @@ export function useGetInvestmentList(options = {}) {
   const [companyList, setCompanyList] = useState([]);
   const [pagination, setPagination] = useState({});
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     async function fetchInvestments() {
       try {
+        setIsLoading(true);
+
         const result = await InvestmentStatusApi.getInvestmentStatusList({
           page: options.page || 1,
           limit: options.limit || 10,
@@ -18,11 +22,13 @@ export function useGetInvestmentList(options = {}) {
         setPagination(result.pagination);
       } catch (error) {
         console.error("투자 현황 API 에러:", error.message);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchInvestments();
   }, [options.orderBy, options.limit, options.page]);
 
-  return { companyList, pagination };
+  return { companyList, pagination, isLoading };
 }
