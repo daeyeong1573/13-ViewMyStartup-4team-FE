@@ -3,6 +3,7 @@ import styles from "./CompareStatusPage.module.css";
 import Dropdown from "../../components/common/Dropdown";
 import Pagination from "../../components/common/Pagination";
 import { useGetCompareStatus } from "@/hooks/useGetCompareStatus";
+import { LIMIT } from "@/constants/company";
 
 const COMPARE_STATUS_OPTIONS = [
   { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
@@ -32,65 +33,68 @@ export default function CompareStatusPage() {
         </div>
 
         <div className={styles.tableWrapper}>
-          <div className={styles.tableHeaderContainer}>
-            <div className={styles.tableHeaderRow}>
-              <div className={styles.colRank}>순위</div>
-              <div className={styles.colCompany}>기업 명</div>{" "}
-              <div className={styles.colIntro}>기업 소개</div>
-              <div className={styles.colCategory}>카테고리</div>
-              <div className={styles.colCount}>나의 기업 선택 횟수</div>
-              <div className={styles.colInvestment}>비교 기업 선택 횟수</div>
-            </div>
-          </div>
+          <table className={styles.tableHeaderContainer}>
+            <thead>
+              <tr className={styles.tableHeaderRow}>
+                <th className={styles.colRank}>순위</th>
+                <th className={styles.colCompany}>기업 명</th>
+                <th className={styles.colIntro}>기업 소개</th>
+                <th className={styles.colCategory}>카테고리</th>
+                <th className={styles.colCount}>나의 기업 선택 횟수</th>
+                <th className={styles.colInvestment}>비교 기업 선택 횟수</th>
+              </tr>
+            </thead>
+            <tbody className={styles.tableBodyContainer}>
+              {startups.map((startup, index) => (
+                <tr key={startup.id} className={styles.tableBodyRow}>
+                  <td className={styles.colRank}>
+                    {(page - 1) * LIMIT + index + 1}위
+                  </td>
 
-          <div className={styles.tableBodyContainer}>
-            {startups.map((startup, index) => (
-              <div key={startup.id} className={styles.tableBodyRow}>
-                <div className={styles.colRank}>
-                  {(page - 1) * 10 + index + 1}위
-                </div>
+                  <td className={styles.colCompanyBody}>
+                    <div className={styles.logoWrapper}>
+                      {startup.imgUrl && (
+                        <img
+                          src={startup.imgUrl}
+                          alt="로고"
+                          className={styles.companyLogo}
+                        />
+                      )}
+                    </div>
+                    <span className={styles.companyNameText}>
+                      {startup.name}
+                    </span>
+                  </td>
 
-                <div className={styles.colCompanyBody}>
-                  <div className={styles.logoWrapper}>
-                    {startup.imgUrl && (
-                      <img
-                        src={startup.imgUrl}
-                        alt="로고"
-                        className={styles.companyLogo}
-                      />
-                    )}
-                  </div>
-                  <span className={styles.companyNameText}>{startup.name}</span>
-                </div>
+                  <td className={styles.colIntro}>
+                    <div className={styles.introFlexWrapper}>
+                      <p className={styles.introParagraph}>
+                        {startup.description}
+                      </p>
+                    </div>
+                  </td>
 
-                <div className={styles.colIntro}>
-                  <div className={styles.introFlexWrapper}>
-                    <p className={styles.introParagraph}>
-                      {startup.description}
-                    </p>
-                  </div>
-                </div>
+                  <td className={styles.colCategory}>
+                    <span className={styles.categoryNameText}>
+                      {startup.category}
+                    </span>
+                  </td>
 
-                <div className={styles.colCategory}>
-                  <span className={styles.categoryNameText}>
-                    {startup.category}
-                  </span>
-                </div>
+                  <td className={styles.colCount}>
+                    <span className={styles.countText}>
+                      {(startup.myStartupCount ?? 0).toLocaleString()}
+                    </span>
+                  </td>
 
-                <div className={styles.colCount}>
-                  <span className={styles.countText}>
-                    {(startup.myStartupCount || 0).toLocaleString()}
-                  </span>
-                </div>
-
-                <div className={styles.colInvestment}>
-                  <strong className={styles.investmentText}>
-                    {(startup.compareStartupCount || 0).toLocaleString()}
-                  </strong>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <td className={styles.colInvestment}>
+                    <strong className={styles.investmentText}>
+                      {(startup.compareStartupCount ?? 0).toLocaleString()}
+                    </strong>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         <div className={styles.paginationWrapper}>
