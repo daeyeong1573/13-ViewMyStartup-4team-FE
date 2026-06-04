@@ -3,7 +3,7 @@ import CompanyListPage from "./pages/CompanyListPage";
 import NotFoundPage from "./pages/not-found-page/NotFoundPage";
 import Layout from "./layouts/Layout";
 import InvestmentStatusPage from "./pages/investment-status/InvestmentStatusPage";
-import CompareStatusPage from "./pages/CompareStatusPage";
+import CompareStatusPage from "./pages/compare-status/CompareStatusPage";
 import MyStartupCompareSelectPage from "./pages/my-startup-compare/MyStartupCompareSelectPage";
 import CompanyDetailPage from "./pages/detail-page/CompanyDetailPage";
 import CompareResultPage from "./pages/my-startup-compare/CompareResultPage";

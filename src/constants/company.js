@@ -4,3 +4,4 @@ export const KEYS = {
 };
 
 export const MAX_SIZE = 5;
+export const LIMIT = 10;
