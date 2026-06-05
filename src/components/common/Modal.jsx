@@ -2,7 +2,9 @@ import styles from "./Modal.module.css";
 import CloseIcon from "@/assets/icons/ic_delete.png";
 import { useKeyEscClose } from "@/hooks/useKeyEscClose";
 
-function Modal({ title, children, onClose }) {
+// closePosition : start(왼쪽), end(오른쪽)
+
+function Modal({ title, children, onClose, closePosition = "start" }) {
   useKeyEscClose(onClose);
 
   return (
@@ -14,7 +16,9 @@ function Modal({ title, children, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.header}>
-          {title && <h2 className={styles.title}>{title}</h2>}
+          {(title || closePosition.trim("end")) && (
+            <h2 className={styles.title}>{title}</h2>
+          )}
           <button
             type="button"
             className={styles.closeButton}
