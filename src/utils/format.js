@@ -6,5 +6,5 @@ export function formatCurrencyToKorea(value) {
   if (eok > 0) return `${eok}억`;
   const man = Math.floor(value / 10000);
   if (man > 0) return `${man}만`;
-  return `${value}원`;
+  return `${value}`;
 }
