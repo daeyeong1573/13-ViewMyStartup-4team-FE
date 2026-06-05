@@ -7,6 +7,8 @@ import Pagination from "@/components/common/Pagination";
 import { formatCurrencyToKorea } from "@/utils/format";
 
 import { LIMIT } from "@/constants/company";
+import { useNavigate } from "react-router-dom";
+import { COMPANIES_ENDPOINT } from "@/constants/api";
 
 const INITIAL_FILTER = {
   currentPage: 1,
@@ -28,6 +30,7 @@ const SORT_OPTIONS = [
 ];
 
 export default function InvestmentStatusPage() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const { currentPage, limit, orderBy } = filter;
 
@@ -92,7 +95,14 @@ export default function InvestmentStatusPage() {
                 companyList.map((company, index) => {
                   const rank = (currentPage - 1) * limit + index + 1;
                   return (
-                    <tr key={company.id} className={styles.tableRow}>
+                    <tr
+                      key={company.id}
+                      className={styles.tableRow}
+                      onClick={() =>
+                        navigate(`${COMPANIES_ENDPOINT}/${company.id}`)
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
                       <td className={styles.rank}>{rank}위</td>
                       <td>
                         <div className={styles.companyInfo}>
