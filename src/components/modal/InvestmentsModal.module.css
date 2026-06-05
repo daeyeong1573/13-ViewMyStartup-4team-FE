@@ -1,0 +1,84 @@
+.companyInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.companyLogo {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.companyName {
+  color: var(--white-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.companyCategory {
+  color: var(--gray-gray_200);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  color: var(--white-white);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border-radius: 0.625rem;
+  border: 1px solid var(--gray-gray_200);
+  background: transparent;
+  color: var(--white-white);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.textarea::placeholder {
+  color: var(--gray-gray_200);
+}
+
+.textarea:focus {
+  border-color: var(--white-white);
+}
+
+.textarea.error {
+  border-color: var(--red-red_error);
+}
+
+.textarea.error:focus {
+  border-color: var(--red-red_error);
+}
+
+.errorMessage {
+  color: var(--red-red_error);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}

@@ -10,6 +10,7 @@ import { formatCurrencyToKorea } from "@/utils/format";
 import useGetCompareResult from "@/hooks/useGetCompareResult";
 import useGetCompareRank from "@/hooks/useGetCompareRank";
 import { STARTUP_SORT_OPTIONS } from "@/constants/startupSort";
+import InvestmentsModal from "@/components/modal/InvestmentsModal";
 
 export default function CompareResultPage() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function CompareResultPage() {
   const [compareSort, setCompareSort] = useState(STARTUP_SORT_OPTIONS[0].value);
   const [rankSort, setRankSort] = useState(STARTUP_SORT_OPTIONS[0].value);
   const { myStartupId, compareStartupIds } = state;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { myStartup, compareResultList } = useGetCompareResult({
     myStartupId,
@@ -179,14 +181,22 @@ export default function CompareResultPage() {
         </div>
 
         <div className={styles.footer}>
-          <Button
-            variant="solid"
-            onClick={() => navigate(`/startup/${myStartupId}`)}
-          >
+          <Button variant="solid" onClick={() => setIsModalOpen(true)}>
             나의 기업에 투자하기
           </Button>
         </div>
       </div>
+
+      <InvestmentsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        company={myStartup}
+        mode="create"
+        onSubmit={(formData) => {
+          console.log(formData);
+          setIsModalOpen(false);
+        }}
+      />
     </main>
   );
 }
