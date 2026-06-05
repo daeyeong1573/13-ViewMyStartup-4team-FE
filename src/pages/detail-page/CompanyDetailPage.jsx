@@ -12,6 +12,7 @@ import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
 import { BASE_URL, INVESTMENTS_ENDPOINT } from "@/constants/api";
+import Modal from "@/components/common/Modal";
 
 function CompanyDetailPage() {
   const { id } = useParams();
@@ -33,6 +34,11 @@ function CompanyDetailPage() {
   const [selectedInvestment, setSelectedInvestment] = useState(null);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const [successModal, setSuccessModal] = useState({
+    isOpen: false,
+    message: "",
+  });
 
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
@@ -151,8 +157,13 @@ function CompanyDetailPage() {
         return;
       }
 
-      alert("가상 투자 정보가 수정되었습니다.");
       handleCloseEditModal();
+
+      setSuccessModal({
+        isOpen: true,
+        message: "투자 정보가 수정되었어요!",
+      });
+
       refetch();
     } catch (error) {
       console.error(error.message);
@@ -181,8 +192,13 @@ function CompanyDetailPage() {
         return;
       }
 
-      alert("가상 투자가 성공적으로 등록되었습니다.");
       setIsCreateModalOpen(false);
+
+      setSuccessModal({
+        isOpen: true,
+        message: "투자가 완료되었어요!",
+      });
+
       refetch();
     } catch (error) {
       console.error(error.message);
@@ -423,6 +439,33 @@ function CompanyDetailPage() {
           onConfirm={() => setIsErrorPopupOpen(false)}
           children="잘못된 비밀번호로 삭제에 실패하셨습니다."
         ></Popup>
+      )}
+
+      {successModal.isOpen && (
+        <Modal
+          onClose={() =>
+            setSuccessModal({
+              isOpen: false,
+              message: "",
+            })
+          }
+        >
+          <div className={styles.modalButtonWrapper}>
+            <p className={styles.modalText}>{successModal.message}</p>
+
+            <Button
+              variant="solid"
+              onClick={() =>
+                setSuccessModal({
+                  isOpen: false,
+                  message: "",
+                })
+              }
+            >
+              확인
+            </Button>
+          </div>
+        </Modal>
       )}
     </div>
   );
