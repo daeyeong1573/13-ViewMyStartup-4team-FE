@@ -8,6 +8,7 @@ import { formatCurrencyToKorea } from "@/utils/format";
 
 import { LIMIT } from "@/constants/company";
 import { useNavigate } from "react-router-dom";
+import { COMPANIES_ENDPOINT } from "@/constants/api";
 
 const INITIAL_FILTER = {
   currentPage: 1,
@@ -97,7 +98,9 @@ export default function InvestmentStatusPage() {
                     <tr
                       key={company.id}
                       className={styles.tableRow}
-                      onClick={() => navigate(`/companies/${company.id}`)}
+                      onClick={() =>
+                        navigate(`${COMPANIES_ENDPOINT}/${company.id}`)
+                      }
                       style={{ cursor: "pointer" }}
                     >
                       <td className={styles.rank}>{rank}위</td>

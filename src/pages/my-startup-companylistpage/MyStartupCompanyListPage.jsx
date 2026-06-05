@@ -7,6 +7,7 @@ import Dropdown from "@/components/common/Dropdown";
 import Pagination from "@/components/common/Pagination";
 import { formatCurrencyToKorea } from "@/utils/format";
 import { useGetStartupList } from "@/hooks/useGetStartupList";
+import { COMPANIES_ENDPOINT } from "@/constants/api";
 
 const INITIAL_FILTER = {
   currentPage: 1,
@@ -128,7 +129,9 @@ export default function MyStartupCompanyListPage() {
                     <tr
                       key={company.id}
                       className={styles.tbodyRow}
-                      onClick={() => navigate(`/companies/${company.id}`)}
+                      onClick={() =>
+                        navigate(`${COMPANIES_ENDPOINT}/${company.id}`)
+                      }
                       style={{ cursor: "pointer" }}
                     >
                       <td className={styles.cellRankText}>{rank}위</td>
