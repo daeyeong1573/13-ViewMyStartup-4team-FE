@@ -32,6 +32,8 @@ function CompanyDetailPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedInvestment, setSelectedInvestment] = useState(null);
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
 
@@ -157,6 +159,36 @@ function CompanyDetailPage() {
     }
   }
 
+  async function handleCreateInvestmentSubmit(submittedData) {
+    try {
+      const response = await fetch(`${BASE_URL}/investments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startupId: id,
+          investorName: submittedData.investorName,
+          amount: submittedData.amount,
+          comment: submittedData.comment,
+          password: submittedData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errBody = await response.json();
+        alert(errBody || "투자 생성에 실패했습니다.");
+        return;
+      }
+
+      alert("가상 투자가 성공적으로 등록되었습니다.");
+      setIsCreateModalOpen(false);
+      refetch();
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.mainWrapper}>
@@ -218,7 +250,11 @@ function CompanyDetailPage() {
               View My Startup에서 받은 투자
             </h2>
             <div className={styles.actionButtons}>
-              <Button variant="solid" size="large">
+              <Button
+                variant="solid"
+                size="large"
+                onClick={() => setIsCreateModalOpen(true)}
+              >
                 기업투자하기
               </Button>
             </div>
@@ -350,6 +386,16 @@ function CompanyDetailPage() {
         </section>
       </div>
 
+      {isCreateModalOpen && (
+        <InvestmentsModal
+          isOpen={isCreateModalOpen}
+          mode="create"
+          company={company}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSubmit={handleCreateInvestmentSubmit}
+        />
+      )}
+
       {isEditModalOpen && (
         <InvestmentsModal
           isOpen={isEditModalOpen}
@@ -370,6 +416,7 @@ function CompanyDetailPage() {
           onConfirm={handleConfirmDelete}
         />
       )}
+
       {isErrorPopupOpen && (
         <Popup
           onClose={() => setIsErrorPopupOpen(false)}
