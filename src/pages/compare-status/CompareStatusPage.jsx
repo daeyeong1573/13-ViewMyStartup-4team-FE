@@ -4,6 +4,7 @@ import Dropdown from "../../components/common/Dropdown";
 import Pagination from "../../components/common/Pagination";
 import { useGetCompareStatus } from "@/hooks/useGetCompareStatus";
 import { LIMIT } from "@/constants/company";
+import { useNavigate } from "react-router-dom";
 
 const COMPARE_STATUS_OPTIONS = [
   { label: "나의 기업 선택 횟수 높은순", value: "myStartupCount_desc" },
@@ -13,6 +14,7 @@ const COMPARE_STATUS_OPTIONS = [
 ];
 
 export default function CompareStatusPage() {
+  const navigate = useNavigate();
   const { startups, currentSort, setCurrentSort, page, setPage, totalPages } =
     useGetCompareStatus(COMPARE_STATUS_OPTIONS[0]);
   return (
@@ -46,7 +48,12 @@ export default function CompareStatusPage() {
             </thead>
             <tbody className={styles.tableBodyContainer}>
               {startups.map((startup, index) => (
-                <tr key={startup.id} className={styles.tableBodyRow}>
+                <tr
+                  key={startup.id}
+                  className={styles.tableBodyRow}
+                  onClick={() => navigate(`/companies/${startup.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
                   <td className={styles.colRank}>
                     {(page - 1) * LIMIT + index + 1}위
                   </td>
