@@ -11,6 +11,13 @@ import useGetCompareResult from "@/hooks/useGetCompareResult";
 import useGetCompareRank from "@/hooks/useGetCompareRank";
 import { STARTUP_SORT_OPTIONS } from "@/constants/startupSort";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
+import usePostInvesement from "@/hooks/usePostInvesement";
+import Modal from "@/components/common/Modal";
+
+const MODAL_INIT = {
+  investmentModal: false,
+  successModal: false,
+};
 
 export default function CompareResultPage() {
   const navigate = useNavigate();
@@ -19,7 +26,8 @@ export default function CompareResultPage() {
   const [compareSort, setCompareSort] = useState(STARTUP_SORT_OPTIONS[0].value);
   const [rankSort, setRankSort] = useState(STARTUP_SORT_OPTIONS[0].value);
   const { myStartupId, compareStartupIds } = state;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(MODAL_INIT);
+  const { postInvesement } = usePostInvesement();
 
   const { myStartup, compareResultList } = useGetCompareResult({
     myStartupId,
@@ -31,6 +39,11 @@ export default function CompareResultPage() {
     myStartupId,
     orderBy: rankSort,
   });
+
+  const submitHandle = (data) => {
+    postInvesement({ startupId: myStartupId, ...data });
+    setIsModalOpen({ investmentModal: false, successModal: true });
+  };
 
   useEffect(() => {
     if (!state) {
@@ -181,22 +194,41 @@ export default function CompareResultPage() {
         </div>
 
         <div className={styles.footer}>
-          <Button variant="solid" onClick={() => setIsModalOpen(true)}>
+          <Button
+            variant="solid"
+            onClick={() => setIsModalOpen({ investmentModal: true })}
+          >
             나의 기업에 투자하기
           </Button>
         </div>
       </div>
 
       <InvestmentsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen.investmentModal}
+        onClose={() => setIsModalOpen({ investmentModal: false })}
         company={myStartup}
         mode="create"
         onSubmit={(formData) => {
-          console.log(formData);
-          setIsModalOpen(false);
+          submitHandle(formData);
         }}
       />
+
+      {isModalOpen.successModal && (
+        <Modal
+          closePosition="end"
+          onClose={() => setIsModalOpen({ successModal: false })}
+        >
+          <div className={styles.modalButtonWrapper}>
+            <p className={styles.modalText}>투자가 완료되었어요!</p>
+            <Button
+              variant="solid"
+              onClick={() => setIsModalOpen({ successModal: false })}
+            >
+              확인
+            </Button>
+          </div>
+        </Modal>
+      )}
     </main>
   );
 }
