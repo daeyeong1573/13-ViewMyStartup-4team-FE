@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
-import { BASE_URL } from "@/constants/api";
+import { BASE_URL, INVESTMENTS_ENDPOINT } from "@/constants/api";
 
 function CompanyDetailPage() {
   const { id } = useParams();
@@ -130,7 +130,7 @@ function CompanyDetailPage() {
   async function handleConfirmEdit(submittedData) {
     try {
       const response = await fetch(
-        `${BASE_URL}/investments/${selectedInvestment.id}`,
+        `${BASE_URL}${INVESTMENTS_ENDPOINT}/${selectedInvestment.id}`,
         {
           method: "PATCH",
           headers: {
@@ -161,7 +161,7 @@ function CompanyDetailPage() {
 
   async function handleCreateInvestmentSubmit(submittedData) {
     try {
-      const response = await fetch(`${BASE_URL}/investments`, {
+      const response = await fetch(`${BASE_URL}${INVESTMENTS_ENDPOINT}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
