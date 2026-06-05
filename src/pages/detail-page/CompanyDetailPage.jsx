@@ -10,6 +10,8 @@ import Popup from "@/components/common/Popup";
 import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
+import InvestmentsModal from "@/components/modal/InvestmentsModal";
+import { BASE_URL } from "@/constants/api";
 
 function CompanyDetailPage() {
   const { id } = useParams();
@@ -27,6 +29,9 @@ function CompanyDetailPage() {
   const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
+
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
 
@@ -36,7 +41,6 @@ function CompanyDetailPage() {
   );
 
   const totalAmountSum = data?.virtualInvestmentTotal || 0;
-
   const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
 
   // 드롭다운 밖을 누르면 닫히는 로직
@@ -107,6 +111,49 @@ function CompanyDetailPage() {
       setIsDeleteModalOpen(false);
       setIsErrorPopupOpen(true);
       setPassword("");
+    }
+  }
+
+  function handleOpenEditModal(item) {
+    setSelectedInvestment(item);
+    setIsEditModalOpen(true);
+    setOpenKebabId(null);
+  }
+
+  function handleCloseEditModal() {
+    setIsEditModalOpen(false);
+    setSelectedInvestment(null);
+  }
+
+  async function handleConfirmEdit(submittedData) {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/investments/${selectedInvestment.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            investorName: submittedData.investorName,
+            amount: submittedData.amount,
+            comment: submittedData.comment,
+            password: submittedData.password,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const errBody = await response.json();
+        alert(errBody.message || "수정에 실패했습니다.");
+        return;
+      }
+
+      alert("가상 투자 정보가 수정되었습니다.");
+      handleCloseEditModal();
+      refetch();
+    } catch (error) {
+      console.error(error.message);
     }
   }
 
@@ -274,6 +321,7 @@ function CompanyDetailPage() {
                               <button
                                 type="button"
                                 className={styles.dropdownItem}
+                                onClick={() => handleOpenEditModal(item)}
                               >
                                 수정하기
                               </button>
@@ -301,6 +349,17 @@ function CompanyDetailPage() {
           )}
         </section>
       </div>
+
+      {isEditModalOpen && (
+        <InvestmentsModal
+          isOpen={isEditModalOpen}
+          mode="edit"
+          company={company}
+          initialData={selectedInvestment}
+          onClose={handleCloseEditModal}
+          onSubmit={handleConfirmEdit}
+        />
+      )}
 
       {isDeleteModalOpen && (
         <DeleteModal
