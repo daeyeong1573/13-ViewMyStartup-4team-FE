@@ -13,6 +13,7 @@ import { STARTUP_SORT_OPTIONS } from "@/constants/startupSort";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
 import usePostInvesement from "@/hooks/usePostInvesement";
 import Modal from "@/components/common/Modal";
+import { COMPANIES_ENDPOINT } from "@/constants/api";
 
 const MODAL_INIT = {
   investmentModal: false,
@@ -106,6 +107,10 @@ export default function CompareResultPage() {
                 <tr
                   key={company.id}
                   className={`${company.id === myStartupId ? styles.myCompanyRow : ""}`}
+                  onClick={() =>
+                    window.open(`${COMPANIES_ENDPOINT}/${company.id}`, "_blank")
+                  }
+                  style={{ cursor: "pointer" }}
                 >
                   <td>
                     <div className={styles.companyNameCell}>
@@ -161,6 +166,10 @@ export default function CompareResultPage() {
                   className={
                     company.id === myStartupId ? styles.myCompanyRow : ""
                   }
+                  onClick={() =>
+                    window.open(`${COMPANIES_ENDPOINT}/${company.id}`, "_blank")
+                  }
+                  style={{ cursor: "pointer" }}
                 >
                   <td className={styles.rankCell}>{company.rank}위</td>
                   <td>
