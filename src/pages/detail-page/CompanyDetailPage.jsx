@@ -12,9 +12,7 @@ import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
 
 function CompanyDetailPage() {
-  const { id: dummyId } = useParams();
-  //TODO 현재 랜딩페이지와 연결되어있지 않아 임시로 dummyId 삽입
-  const id = dummyId || "23ccbb62-8274-4007-b74e-0113aa34a26c";
+  const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, refetch } = useGetStartupDetail(id, {
     page: currentPage,

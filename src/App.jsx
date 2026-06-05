@@ -19,9 +19,8 @@ function App() {
           <Route path="mycompare/result" element={<CompareResultPage />} />
           <Route path="comparestat" element={<CompareStatusPage />} />
           <Route path="investstat" element={<InvestmentStatusPage />} />
-          {/* 임시 라우트 */}
-          <Route path="companydetail" element={<CompanyDetailPage />} />
-          {/*//TODO <Route path="companies/:id" element={<CompanyDetailPage />} /> */}
+          <Route path="companies/:id" element={<CompanyDetailPage />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
