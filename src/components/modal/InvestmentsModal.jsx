@@ -43,7 +43,7 @@ function InvestmentsModal({
     if (isEdit && initialData) {
       setForm({
         investorName: initialData.investorName ?? "",
-        amount: initialData.amount ?? "",
+        amount: initialData.amount ? String(initialData.amount) : "",
         comment: initialData.comment ?? "",
         password: "",
         passwordConfirm: "",
@@ -167,7 +167,7 @@ function InvestmentsModal({
         </div>
 
         <div className={styles.btnWrapper}>
-          <Button variant="solidOutline" onClick={onClose}>
+          <Button variant="solidOutline" onClick={onClose} type="button">
             취소
           </Button>
           <Button variant="solid" status="active" type="submit">
