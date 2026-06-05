@@ -10,11 +10,12 @@ import Popup from "@/components/common/Popup";
 import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
+import InvestmentsModal from "@/components/modal/InvestmentsModal";
+import { BASE_URL, INVESTMENTS_ENDPOINT } from "@/constants/api";
+import Modal from "@/components/common/Modal";
 
 function CompanyDetailPage() {
-  const { id: dummyId } = useParams();
-  //TODO 현재 랜딩페이지와 연결되어있지 않아 임시로 dummyId 삽입
-  const id = dummyId || "23ccbb62-8274-4007-b74e-0113aa34a26c";
+  const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, refetch } = useGetStartupDetail(id, {
     page: currentPage,
@@ -29,6 +30,16 @@ function CompanyDetailPage() {
   const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const [successModal, setSuccessModal] = useState({
+    isOpen: false,
+    message: "",
+  });
+
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
 
@@ -38,7 +49,6 @@ function CompanyDetailPage() {
   );
 
   const totalAmountSum = data?.virtualInvestmentTotal || 0;
-
   const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
 
   // 드롭다운 밖을 누르면 닫히는 로직
@@ -112,6 +122,89 @@ function CompanyDetailPage() {
     }
   }
 
+  function handleOpenEditModal(item) {
+    setSelectedInvestment(item);
+    setIsEditModalOpen(true);
+    setOpenKebabId(null);
+  }
+
+  function handleCloseEditModal() {
+    setIsEditModalOpen(false);
+    setSelectedInvestment(null);
+  }
+
+  async function handleConfirmEdit(submittedData) {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${INVESTMENTS_ENDPOINT}/${selectedInvestment.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            investorName: submittedData.investorName,
+            amount: submittedData.amount,
+            comment: submittedData.comment,
+            password: submittedData.password,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const errBody = await response.json();
+        alert(errBody.message || "수정에 실패했습니다.");
+        return;
+      }
+
+      handleCloseEditModal();
+
+      setSuccessModal({
+        isOpen: true,
+        message: "투자 정보가 수정되었어요!",
+      });
+
+      refetch();
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function handleCreateInvestmentSubmit(submittedData) {
+    try {
+      const response = await fetch(`${BASE_URL}${INVESTMENTS_ENDPOINT}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startupId: id,
+          investorName: submittedData.investorName,
+          amount: submittedData.amount,
+          comment: submittedData.comment,
+          password: submittedData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errBody = await response.json();
+        alert(errBody || "투자 생성에 실패했습니다.");
+        return;
+      }
+
+      setIsCreateModalOpen(false);
+
+      setSuccessModal({
+        isOpen: true,
+        message: "투자가 완료되었어요!",
+      });
+
+      refetch();
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.mainWrapper}>
@@ -173,7 +266,11 @@ function CompanyDetailPage() {
               View My Startup에서 받은 투자
             </h2>
             <div className={styles.actionButtons}>
-              <Button variant="solid" size="large">
+              <Button
+                variant="solid"
+                size="large"
+                onClick={() => setIsCreateModalOpen(true)}
+              >
                 기업투자하기
               </Button>
             </div>
@@ -276,6 +373,7 @@ function CompanyDetailPage() {
                               <button
                                 type="button"
                                 className={styles.dropdownItem}
+                                onClick={() => handleOpenEditModal(item)}
                               >
                                 수정하기
                               </button>
@@ -304,6 +402,27 @@ function CompanyDetailPage() {
         </section>
       </div>
 
+      {isCreateModalOpen && (
+        <InvestmentsModal
+          isOpen={isCreateModalOpen}
+          mode="create"
+          company={company}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSubmit={handleCreateInvestmentSubmit}
+        />
+      )}
+
+      {isEditModalOpen && (
+        <InvestmentsModal
+          isOpen={isEditModalOpen}
+          mode="edit"
+          company={company}
+          initialData={selectedInvestment}
+          onClose={handleCloseEditModal}
+          onSubmit={handleConfirmEdit}
+        />
+      )}
+
       {isDeleteModalOpen && (
         <DeleteModal
           isOpen={isDeleteModalOpen}
@@ -313,12 +432,40 @@ function CompanyDetailPage() {
           onConfirm={handleConfirmDelete}
         />
       )}
+
       {isErrorPopupOpen && (
         <Popup
           onClose={() => setIsErrorPopupOpen(false)}
           onConfirm={() => setIsErrorPopupOpen(false)}
           children="잘못된 비밀번호로 삭제에 실패하셨습니다."
         ></Popup>
+      )}
+
+      {successModal.isOpen && (
+        <Modal
+          onClose={() =>
+            setSuccessModal({
+              isOpen: false,
+              message: "",
+            })
+          }
+        >
+          <div className={styles.modalButtonWrapper}>
+            <p className={styles.modalText}>{successModal.message}</p>
+
+            <Button
+              variant="solid"
+              onClick={() =>
+                setSuccessModal({
+                  isOpen: false,
+                  message: "",
+                })
+              }
+            >
+              확인
+            </Button>
+          </div>
+        </Modal>
       )}
     </div>
   );

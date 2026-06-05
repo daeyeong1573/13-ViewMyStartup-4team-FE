@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./MyStartupCompanyListPage.module.css";
 
 import SearchBar from "@/components/ui/SearchBar";
@@ -24,6 +25,7 @@ const SORT_OPTIONS = [
 ];
 
 export default function MyStartupCompanyListPage() {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState(INITIAL_FILTER);
   const { currentPage, limit, orderBy, keyword } = filter;
 
@@ -123,7 +125,12 @@ export default function MyStartupCompanyListPage() {
                 sortedCompanyList.map((company, index) => {
                   const rank = (currentPage - 1) * limit + index + 1;
                   return (
-                    <tr key={company.id} className={styles.tbodyRow}>
+                    <tr
+                      key={company.id}
+                      className={styles.tbodyRow}
+                      onClick={() => navigate(`/companies/${company.id}`)}
+                      style={{ cursor: "pointer" }}
+                    >
                       <td className={styles.cellRankText}>{rank}위</td>
 
                       <td>

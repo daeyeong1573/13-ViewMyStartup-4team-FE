@@ -64,7 +64,11 @@ function InvestmentsModal({
   }
 
   function validate() {
-    const result = investmentSchema.safeParse(form);
+    const dataToValidate = isEdit
+      ? { ...form, passwordConfirm: form.password }
+      : form;
+
+    const result = investmentSchema.safeParse(dataToValidate);
     if (result.success) return {};
     return result.error.issues.reduce((acc, issue) => {
       const key = issue.path[0];
@@ -147,7 +151,11 @@ function InvestmentsModal({
           <label className={styles.label}>비밀번호</label>
           <Input
             type="password"
-            placeholder="비밀번호를 입력해주세요"
+            placeholder={
+              isEdit
+                ? "투자 생성시 입력했던 비밀번호를 입력해주세요"
+                : "비밀번호를 입력해주세요"
+            }
             value={form.password}
             onChange={handleChange("password")}
             errorMessage={errors.password}
@@ -155,16 +163,18 @@ function InvestmentsModal({
         </div>
 
         {/* 비밀번호 확인 */}
-        <div className={styles.section}>
-          <label className={styles.label}>비밀번호 확인</label>
-          <Input
-            type="password"
-            placeholder="비밀번호를 다시 한 번 입력해주세요"
-            value={form.passwordConfirm}
-            onChange={handleChange("passwordConfirm")}
-            errorMessage={errors.passwordConfirm}
-          />
-        </div>
+        {!isEdit && (
+          <div className={styles.section}>
+            <label className={styles.label}>비밀번호 확인</label>
+            <Input
+              type="password"
+              placeholder="비밀번호를 다시 한 번 입력해주세요"
+              value={form.passwordConfirm}
+              onChange={handleChange("passwordConfirm")}
+              errorMessage={errors.passwordConfirm}
+            />
+          </div>
+        )}
 
         <div className={styles.btnWrapper}>
           <Button variant="solidOutline" onClick={onClose} type="button">
