@@ -1,4 +1,5 @@
 .container {
+  width: 100%;
   height: 3.75rem;
   border-bottom: 1px solid var(--black-black_100);
   background: var(--black-black_400);
@@ -9,11 +10,12 @@
 .gnbBox {
   display: flex;
   align-items: center;
-  max-width: 120rem;
+  max-width: 1200px;
   width: 100%;
   height: 100%;
   gap: 2.5rem;
-  padding-left: 22.5rem;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .logoWrapper {
@@ -53,4 +55,30 @@
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: normal;
+}
+
+@media (max-width: 1199px) {
+  .gnbBox {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 743px) {
+  .gnbBox {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .navLink {
+    padding: 1.3125rem 0.625rem;
+  }
+
+  .nameTag {
+    font-size: 0.8125rem;
+  }
+
+  .logoWrapper {
+    width: 5.5rem;
+  }
 }
