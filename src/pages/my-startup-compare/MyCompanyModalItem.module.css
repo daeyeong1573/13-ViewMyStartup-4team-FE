@@ -6,3 +6,10 @@
   font-weight: 700;
   line-height: normal;
 }
+
+@media (max-width: 743px) {
+  .modalHeader {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+}

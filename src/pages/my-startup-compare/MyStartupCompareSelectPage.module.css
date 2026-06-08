@@ -67,3 +67,23 @@
   margin-top: 1rem;
   margin-left: 0.5rem;
 }
+
+@media (max-width: 743px) {
+  .inner {
+    padding: 4.5rem 1rem 2rem;
+  }
+
+  .addCompareBtn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+
+  .footer {
+    margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .maxTxt {
+    font-size: 0.8125rem;
+  }
+}
