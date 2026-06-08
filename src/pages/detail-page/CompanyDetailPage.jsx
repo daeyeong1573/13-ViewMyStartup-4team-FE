@@ -11,7 +11,6 @@ import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import { StartupDetailApi } from "@/services/startupDetailService";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
-import { BASE_URL, INVESTMENTS_ENDPOINT } from "@/constants/api";
 import Modal from "@/components/common/Modal";
 
 function CompanyDetailPage() {
