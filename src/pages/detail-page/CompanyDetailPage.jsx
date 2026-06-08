@@ -2,7 +2,7 @@ import styles from "./CompanyDetailPage.module.css";
 import defaultLogo from "@/assets/images/default_image.png";
 import Button from "@/components/ui/Button";
 import kebabIcon from "@/assets/icons/ic_kebab.png";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { formatCurrencyToKorea } from "@/utils/format";
 import Pagination from "@/components/common/Pagination";
 import DeleteModal from "./DeleteModal";
@@ -12,6 +12,7 @@ import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
 import Modal from "@/components/common/Modal";
 import { useInvestmentModalActions } from "@/hooks/useInvestmentModalActions";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 function CompanyDetailPage() {
   const { id } = useParams();
@@ -22,8 +23,8 @@ function CompanyDetailPage() {
   });
   const { state, handlers } = useInvestmentModalActions(id, refetch);
 
-  const openKebabIdRef = useRef(state.openKebabId);
   const tableRef = useRef(null);
+  useClickOutside(tableRef, state.openKebabId, handlers.setOpenKebabId);
 
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
@@ -34,25 +35,6 @@ function CompanyDetailPage() {
 
   const totalAmountSum = data?.virtualInvestmentTotal || 0;
   const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
-
-  // 드롭다운 밖을 누르면 닫히는 로직
-  useEffect(() => {
-    openKebabIdRef.current = state.openKebabId;
-  }, [state.openKebabId]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (tableRef.current && !tableRef.current.contains(event.target)) {
-        if (openKebabIdRef.current !== null) {
-          handlers.setOpenKebabId(null);
-        }
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [handlers]);
 
   if (isLoading) {
     return (
@@ -306,15 +288,15 @@ function CompanyDetailPage() {
           isOpen={state.isDeleteModalOpen}
           onClose={handlers.handleCloseDeleteModal}
           password={state.password}
-          onPasswordChange={state.setPassword}
+          onPasswordChange={handlers.setPassword}
           onConfirm={handlers.handleConfirmDelete}
         />
       )}
 
       {state.isErrorPopupOpen && (
         <Popup
-          onClose={() => state.setIsErrorPopupOpen(false)}
-          onConfirm={() => state.setIsErrorPopupOpen(false)}
+          onClose={() => handlers.setIsErrorPopupOpen(false)}
+          onConfirm={() => handlers.setIsErrorPopupOpen(false)}
           children="잘못된 비밀번호로 삭제에 실패하셨습니다."
         ></Popup>
       )}
