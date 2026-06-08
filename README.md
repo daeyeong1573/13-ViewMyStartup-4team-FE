@@ -1,5 +1,3 @@
-Profile Avatar
-
 # 📈 4팀 초급 프로젝트 ViewMyStartup FE
 
 ## 👥 팀 소개
@@ -60,14 +58,17 @@ Profile Avatar
 - 드롭다운을 통한 정렬 기능
 
 **공용 컴포넌트**
+
 - SearchBar 기존 뷰만 존재하던 상태 => InputValue및 submit 기능추가
 - PagiNation 디자인과 다른 css 및 UI 구조 수정
 - Modal 컴포넌트 ESC 종료 기능 추가
 - 투자/수정하기 모달
 
-**상수 파일** 
+**상수 파일**
+
 - company.js 기업선택 로컬 스토리지 Key
 - startupSort 기업 정렬 드롭다운 옵션
+
 ### 안미영
 
 **전체 기업 투자 현황 조회**
