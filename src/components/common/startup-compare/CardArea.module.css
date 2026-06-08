@@ -22,3 +22,19 @@
   margin-top: 2.5rem;
   margin-bottom: 1.25rem;
 }
+
+@media (max-width: 743px) {
+  .cardHeader {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .headerText {
+    font-size: 1rem;
+  }
+
+  .cardArea {
+    padding: 1.5rem 1rem;
+    min-height: 160px;
+  }
+}

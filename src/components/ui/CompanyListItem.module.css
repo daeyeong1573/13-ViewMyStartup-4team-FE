@@ -51,3 +51,32 @@
   font-weight: 400;
   line-height: normal;
 }
+
+@media (max-width: 743px) {
+  .imageWrapper {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .contentBox {
+    min-width: 0;
+  }
+
+  .infoBox {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .companyName {
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .categoryText {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
