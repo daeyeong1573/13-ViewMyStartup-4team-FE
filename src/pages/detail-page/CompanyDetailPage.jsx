@@ -33,8 +33,10 @@ function CompanyDetailPage() {
     [data],
   );
 
-  const totalAmountSum = data?.virtualInvestmentTotal || 0;
-  const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
+  const formattedTotalAmount = useMemo(
+    () => formatCurrencyToKorea(data?.virtualInvestmentTotal || 0),
+    [data?.virtualInvestmentTotal],
+  );
 
   if (isLoading) {
     return (
