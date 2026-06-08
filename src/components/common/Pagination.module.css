@@ -1,0 +1,58 @@
+/* PagiNation.module.css */
+
+.Pagination {
+  width: 100%;
+  height: 6.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+}
+
+.pageBtn {
+  font-family: var(--font-pretendard);
+  background-color: var(--black-black_100);
+  color: var(--gray-gray_200);
+  border: none;
+  border-radius: 0.5rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: var(--black-black_100);
+  color: var(--white-white);
+}
+
+.pageBtn.active {
+  background-color: var(--brand-brand_orange);
+  color: var(--white-white);
+  font-weight: bold;
+}
+
+.pageBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 743px) {
+  .Pagination {
+    height: 5rem;
+    margin-top: 1.5rem;
+    gap: 0.375rem;
+  }
+
+  .pageBtn {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.8125rem;
+    border-radius: 0.375rem;
+  }
+}

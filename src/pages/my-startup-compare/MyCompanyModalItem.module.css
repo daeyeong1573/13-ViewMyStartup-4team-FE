@@ -1,0 +1,15 @@
+.modalHeader {
+  margin-top: 1.5rem;
+  color: var(--white-white);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+@media (max-width: 743px) {
+  .modalHeader {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+}

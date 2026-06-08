@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  width: 75rem;
+  height: 18.75rem;
+  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+  border-radius: 0.25rem;
+  border: 1px dashed var(--black-black_300);
+}
+
+.inactive {
+  background: transparent;
+}
+
+.active,
+.error {
+  background: var(--black-black_200);
+}
+
+.innerBox {
+  width: 73rem;
+  height: 16.75rem;
+  background: var(--black-black_200);
+}

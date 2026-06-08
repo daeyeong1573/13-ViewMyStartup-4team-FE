@@ -1,0 +1,13 @@
+.appContainer {
+  padding: 2.5rem;
+  background-color: var(--black-black_400);
+  color: var(--white-white);
+  min-height: 100vh;
+}
+
+.listContainer {
+  margin-bottom: 2.5rem;
+  padding: 1.25rem;
+  border: 0.0625rem solid var(--gray-gray_400);
+  border-radius: 0.5rem;
+}

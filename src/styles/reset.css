@@ -107,6 +107,7 @@ section {
 }
 body {
   line-height: 1;
+  overflow-y: auto;
 }
 ol,
 ul {
@@ -131,4 +132,11 @@ table {
 *::before,
 *::after {
   box-sizing: border-box;
+}
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-pretendard);
 }

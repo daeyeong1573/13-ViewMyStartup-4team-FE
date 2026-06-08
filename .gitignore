@@ -4,6 +4,9 @@ dist/
 
 # 로컬 환경 변수
 .env
+.env.*
+!.env.example
+
 
 # Logs
 logs

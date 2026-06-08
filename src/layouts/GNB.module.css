@@ -1,0 +1,84 @@
+.container {
+  width: 100%;
+  height: 3.75rem;
+  border-bottom: 1px solid var(--black-black_100);
+  background: var(--black-black_400);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gnbBox {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  gap: 2.5rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.logoWrapper {
+  width: 6.9105rem;
+  height: 2.43481rem;
+  flex-shrink: 0;
+}
+
+.logoWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.navMenu {
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  display: flex;
+  padding: 1.3125rem 1.0625rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  text-decoration: none;
+}
+
+.active .nameTag {
+  color: #fff;
+  font-weight: 700;
+}
+
+.nameTag {
+  color: var(--gray-gray_200);
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: normal;
+}
+
+@media (max-width: 1199px) {
+  .gnbBox {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 743px) {
+  .gnbBox {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .navLink {
+    padding: 1.3125rem 0.625rem;
+  }
+
+  .nameTag {
+    font-size: 0.8125rem;
+  }
+
+  .logoWrapper {
+    width: 5.5rem;
+  }
+}
