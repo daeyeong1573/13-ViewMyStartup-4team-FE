@@ -13,4 +13,15 @@ export const StartupDetailApi = {
       password,
     });
   },
+
+  async createInvestment(createData) {
+    return await API.post(`${INVESTMENTS_ENDPOINT}`, createData);
+  },
+
+  async updateInvestment(investmentsId, updateData) {
+    return await API.patch(
+      `${INVESTMENTS_ENDPOINT}/${investmentsId}`,
+      updateData,
+    );
+  },
 };

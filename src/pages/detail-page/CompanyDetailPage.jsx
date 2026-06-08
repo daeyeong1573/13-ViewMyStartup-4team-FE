@@ -135,28 +135,12 @@ function CompanyDetailPage() {
 
   async function handleConfirmEdit(submittedData) {
     try {
-      const response = await fetch(
-        `${BASE_URL}${INVESTMENTS_ENDPOINT}/${selectedInvestment.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            investorName: submittedData.investorName,
-            amount: submittedData.amount,
-            comment: submittedData.comment,
-            password: submittedData.password,
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        const errBody = await response.json();
-        alert(errBody.message || "수정에 실패했습니다.");
-        return;
-      }
-
+      await StartupDetailApi.updateInvestment(selectedInvestment.id, {
+        investorName: submittedData.investorName,
+        amount: submittedData.amount,
+        comment: submittedData.comment,
+        password: submittedData.password,
+      });
       handleCloseEditModal();
 
       setSuccessModal({
@@ -167,32 +151,20 @@ function CompanyDetailPage() {
       refetch();
     } catch (error) {
       console.error(error.message);
+      alert(error.message || "수정에 실패했습니다.");
     }
   }
 
   async function handleCreateInvestmentSubmit(submittedData) {
     try {
-      const response = await fetch(`${BASE_URL}${INVESTMENTS_ENDPOINT}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          startupId: id,
-          investorName: submittedData.investorName,
-          amount: submittedData.amount,
-          comment: submittedData.comment,
-          password: submittedData.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errBody = await response.json();
-        alert(errBody || "투자 생성에 실패했습니다.");
-        return;
-      }
-
-      setIsCreateModalOpen(false);
+      (await StartupDetailApi.createInvestment({
+        startupId: id,
+        investorName: submittedData.investorName,
+        amount: submittedData.amount,
+        comment: submittedData.comment,
+        password: submittedData.password,
+      }),
+        setIsCreateModalOpen(false));
 
       setSuccessModal({
         isOpen: true,
@@ -202,6 +174,7 @@ function CompanyDetailPage() {
       refetch();
     } catch (error) {
       console.error(error.message);
+      alert(error.message || "투자 생성에 실패했습니다.");
     }
   }
 
