@@ -2,17 +2,17 @@ import styles from "./CompanyDetailPage.module.css";
 import defaultLogo from "@/assets/images/default_image.png";
 import Button from "@/components/ui/Button";
 import kebabIcon from "@/assets/icons/ic_kebab.png";
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { formatCurrencyToKorea } from "@/utils/format";
 import Pagination from "@/components/common/Pagination";
 import DeleteModal from "./DeleteModal";
 import Popup from "@/components/common/Popup";
 import { useParams } from "react-router-dom";
 import { useGetStartupDetail } from "@/hooks/useGetStartupDetail";
-import { StartupDetailApi } from "@/services/startupDetailService";
 import InvestmentsModal from "@/components/modal/InvestmentsModal";
-import { BASE_URL, INVESTMENTS_ENDPOINT } from "@/constants/api";
 import Modal from "@/components/common/Modal";
+import { useInvestmentModalActions } from "@/hooks/useInvestmentModalActions";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 function CompanyDetailPage() {
   const { id } = useParams();
@@ -21,54 +21,22 @@ function CompanyDetailPage() {
     page: currentPage,
     limit: 5,
   });
+  const { state, handlers } = useInvestmentModalActions(id, refetch);
 
-  const [openKebabId, setOpenKebabId] = useState(null);
-  const openKebabIdRef = useRef(openKebabId);
   const tableRef = useRef(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [isErrorPopupOpen, setIsErrorPopupOpen] = useState(false);
-  const [deletingId, setDeletingId] = useState(null);
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedInvestment, setSelectedInvestment] = useState(null);
-
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  const [successModal, setSuccessModal] = useState({
-    isOpen: false,
-    message: "",
-  });
+  useClickOutside(tableRef, state.openKebabId, handlers.setOpenKebabId);
 
   const company = data || {};
   const investments = useMemo(() => data?.investmentList?.data || [], [data]);
-
   const pagination = useMemo(
     () => data?.investmentList?.pagination || { totalPages: 1, page: 1 },
     [data],
   );
 
-  const totalAmountSum = data?.virtualInvestmentTotal || 0;
-  const formattedTotalAmount = formatCurrencyToKorea(totalAmountSum);
-
-  // 드롭다운 밖을 누르면 닫히는 로직
-  useEffect(() => {
-    openKebabIdRef.current = openKebabId;
-  }, [openKebabId]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (tableRef.current && !tableRef.current.contains(event.target)) {
-        if (openKebabIdRef.current !== null) {
-          setOpenKebabId(null);
-        }
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const formattedTotalAmount = useMemo(
+    () => formatCurrencyToKorea(data?.virtualInvestmentTotal || 0),
+    [data?.virtualInvestmentTotal],
+  );
 
   if (isLoading) {
     return (
@@ -92,117 +60,7 @@ function CompanyDetailPage() {
   }
 
   function handleKebabToggle(id) {
-    setOpenKebabId(openKebabId === id ? null : id);
-  }
-
-  // 모달 관련 로직
-
-  function handleOpenDeleteModal(id) {
-    setDeletingId(id);
-    setIsDeleteModalOpen(true);
-  }
-
-  function handleCloseDeleteModal() {
-    setIsDeleteModalOpen(false);
-    setDeletingId(null);
-    setPassword("");
-  }
-
-  async function handleConfirmDelete() {
-    try {
-      await StartupDetailApi.deleteInvestment(deletingId, password);
-      console.log(`${deletingId} 항목 삭제 실행`);
-      handleCloseDeleteModal();
-      refetch();
-    } catch (error) {
-      console.error(error.message);
-      setIsDeleteModalOpen(false);
-      setIsErrorPopupOpen(true);
-      setPassword("");
-    }
-  }
-
-  function handleOpenEditModal(item) {
-    setSelectedInvestment(item);
-    setIsEditModalOpen(true);
-    setOpenKebabId(null);
-  }
-
-  function handleCloseEditModal() {
-    setIsEditModalOpen(false);
-    setSelectedInvestment(null);
-  }
-
-  async function handleConfirmEdit(submittedData) {
-    try {
-      const response = await fetch(
-        `${BASE_URL}${INVESTMENTS_ENDPOINT}/${selectedInvestment.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            investorName: submittedData.investorName,
-            amount: submittedData.amount,
-            comment: submittedData.comment,
-            password: submittedData.password,
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        const errBody = await response.json();
-        alert(errBody.message || "수정에 실패했습니다.");
-        return;
-      }
-
-      handleCloseEditModal();
-
-      setSuccessModal({
-        isOpen: true,
-        message: "투자 정보가 수정되었어요!",
-      });
-
-      refetch();
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
-  async function handleCreateInvestmentSubmit(submittedData) {
-    try {
-      const response = await fetch(`${BASE_URL}${INVESTMENTS_ENDPOINT}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          startupId: id,
-          investorName: submittedData.investorName,
-          amount: submittedData.amount,
-          comment: submittedData.comment,
-          password: submittedData.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errBody = await response.json();
-        alert(errBody || "투자 생성에 실패했습니다.");
-        return;
-      }
-
-      setIsCreateModalOpen(false);
-
-      setSuccessModal({
-        isOpen: true,
-        message: "투자가 완료되었어요!",
-      });
-
-      refetch();
-    } catch (error) {
-      console.error(error.message);
-    }
+    handlers.setOpenKebabId(state.openKebabId === id ? null : id);
   }
 
   return (
@@ -269,7 +127,7 @@ function CompanyDetailPage() {
               <Button
                 variant="solid"
                 size="large"
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={() => handlers.setIsCreateModalOpen(true)}
               >
                 기업투자하기
               </Button>
@@ -368,19 +226,23 @@ function CompanyDetailPage() {
                           >
                             <img src={kebabIcon} alt="더보기" />
                           </button>
-                          {openKebabId === item.id && (
+                          {state.openKebabId === item.id && (
                             <div className={styles.kebabDropdown}>
                               <button
                                 type="button"
                                 className={styles.dropdownItem}
-                                onClick={() => handleOpenEditModal(item)}
+                                onClick={() =>
+                                  handlers.handleOpenEditModal(item)
+                                }
                               >
                                 수정하기
                               </button>
                               <button
                                 type="button"
                                 className={`${styles.dropdownItem} ${styles.deleteText}`}
-                                onClick={() => handleOpenDeleteModal(item.id)}
+                                onClick={() =>
+                                  handlers.handleOpenDeleteModal(item.id)
+                                }
                               >
                                 삭제하기
                               </button>
@@ -402,61 +264,61 @@ function CompanyDetailPage() {
         </section>
       </div>
 
-      {isCreateModalOpen && (
+      {state.isCreateModalOpen && (
         <InvestmentsModal
-          isOpen={isCreateModalOpen}
+          isOpen={state.isCreateModalOpen}
           mode="create"
           company={company}
-          onClose={() => setIsCreateModalOpen(false)}
-          onSubmit={handleCreateInvestmentSubmit}
+          onClose={() => handlers.setIsCreateModalOpen(false)}
+          onSubmit={handlers.handleCreateInvestmentSubmit}
         />
       )}
 
-      {isEditModalOpen && (
+      {state.isEditModalOpen && (
         <InvestmentsModal
-          isOpen={isEditModalOpen}
+          isOpen={state.isEditModalOpen}
           mode="edit"
           company={company}
-          initialData={selectedInvestment}
-          onClose={handleCloseEditModal}
-          onSubmit={handleConfirmEdit}
+          initialData={state.selectedInvestment}
+          onClose={handlers.handleCloseEditModal}
+          onSubmit={handlers.handleConfirmEdit}
         />
       )}
 
-      {isDeleteModalOpen && (
+      {state.isDeleteModalOpen && (
         <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onClose={handleCloseDeleteModal}
-          password={password}
-          onPasswordChange={setPassword}
-          onConfirm={handleConfirmDelete}
+          isOpen={state.isDeleteModalOpen}
+          onClose={handlers.handleCloseDeleteModal}
+          password={state.password}
+          onPasswordChange={handlers.setPassword}
+          onConfirm={handlers.handleConfirmDelete}
         />
       )}
 
-      {isErrorPopupOpen && (
+      {state.isErrorPopupOpen && (
         <Popup
-          onClose={() => setIsErrorPopupOpen(false)}
-          onConfirm={() => setIsErrorPopupOpen(false)}
+          onClose={() => handlers.setIsErrorPopupOpen(false)}
+          onConfirm={() => handlers.setIsErrorPopupOpen(false)}
           children="잘못된 비밀번호로 삭제에 실패하셨습니다."
         ></Popup>
       )}
 
-      {successModal.isOpen && (
+      {state.successModal.isOpen && (
         <Modal
           onClose={() =>
-            setSuccessModal({
+            handlers.setSuccessModal({
               isOpen: false,
               message: "",
             })
           }
         >
           <div className={styles.modalButtonWrapper}>
-            <p className={styles.modalText}>{successModal.message}</p>
+            <p className={styles.modalText}>{state.successModal.message}</p>
 
             <Button
               variant="solid"
               onClick={() =>
-                setSuccessModal({
+                handlers.setSuccessModal({
                   isOpen: false,
                   message: "",
                 })
