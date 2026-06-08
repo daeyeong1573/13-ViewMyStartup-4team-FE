@@ -70,20 +70,20 @@ export function useInvestmentModalActions(startupId, refetch) {
       refetch();
     } catch (error) {
       console.error(error.message);
-      alert(error.message || "수정에 실패했습니다.");
+      alert("수정에 실패했습니다.");
     }
   }
 
   async function handleCreateInvestmentSubmit(submittedData) {
     try {
-      (await StartupDetailApi.createInvestment({
+      await StartupDetailApi.createInvestment({
         startupId,
         investorName: submittedData.investorName,
         amount: submittedData.amount,
         comment: submittedData.comment,
         password: submittedData.password,
-      }),
-        setIsCreateModalOpen(false));
+      });
+      setIsCreateModalOpen(false);
 
       setSuccessModal({
         isOpen: true,
@@ -93,7 +93,7 @@ export function useInvestmentModalActions(startupId, refetch) {
       refetch();
     } catch (error) {
       console.error(error.message);
-      alert(error.message || "투자 생성에 실패했습니다.");
+      alert("투자 생성에 실패했습니다.");
     }
   }
 
